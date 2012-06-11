@@ -1,7 +1,7 @@
 MiogenPHP
 =========
 
-The official [Miogen+JSON Hypermedia API](https://github.com/medatech/MiogenPHP) client and server implementation written in PHP.
+The official [Miogen+JSON Hypermedia API](https://github.com/medatech/Miogen-Hypermedia-Type) client and server implementation written in PHP.
 
 License
 -------
