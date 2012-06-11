@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Martin Adams <martin.adams@miogen.com>
+ * @license http://opensource.org/licenses/MIT MIT License
+ */
 
 require_once('RequestContext.php');
 require_once('ResponseContext.php');
@@ -8,14 +12,27 @@ require_once('MiogenDictionary.php');
 require_once('MiogenRestModule.php');
 require_once('MiogenDocument.php');
 
-
+/**
+ * Main Miogen PHP server class to handle routing RESTful messages and formatting
+ * them with the Miogen Hypermedia Type.
+ * @package Miogen
+ */
 class MiogenRest {
+    /**
+     * The configuration options for this instance 
+     */
     private $config = null;
     
+    /**
+     * Set of regular expressions that are used to operate against the client URL.
+     * These are generated based on the contents of the defined urls
+     */
     private $configRegexMatches = array();
     
-    private $dbMgr = null;
-    
+    /**
+     * Class constructor
+     * @param array $config The configuration object used for this instance
+     */
     public function __construct ($config) {
         $this->config = $config;
         $this->configRegexMatches = array();
@@ -46,6 +63,13 @@ class MiogenRest {
         }
     }
     
+    /**
+     * Get a config value defined for this instance
+     * @param string $key The config key
+     * @param mixed $default The optional value to return if the key cannot be found.
+     *                       If omitted this will be an empty string
+     * @return mixed
+     */
     public function getConfig ($key, $default='') {
         if (isset($this->config[$key])) {
             return $this->config[$key];
@@ -56,8 +80,10 @@ class MiogenRest {
     }
     
     /**
-    * Process the URL request as a Rest request
-    *
+    * Process the URL request as a Rest request and return the response context
+    * that contains the response status codes and content ready to send to the client.
+    * @param string $url The URL to process taken from the root of the web server and
+    *                    starts with a forward slash
     * @return ResponseContext
     */
     public function &process ($url) {
@@ -72,6 +98,7 @@ class MiogenRest {
                 'regex' => null,
                 'module' => $module
             );
+            
             // Find all the curley braces in it
             $matches = array();
             $result = preg_match_all ('({[a-zA-Z0-9-_]*})' , $moduleUrl, $matches);
@@ -110,13 +137,16 @@ class MiogenRest {
         else {
             $this->executeModule($request, $response);
         }
-        
-        //print('<pre>' . print_r($request, true) . '</pre>');
-        //print('<pre>' . print_r($response, true) . '</pre>');
 
         return $response;
     }
     
+    /**
+     * For the given request context, execute the module that it represents
+     * and populate teh results into the response context
+     * @param RequestContext $request The request context of this execution
+     * @param ResponseContext $response The response context of this execution
+     */
     function executeModule (&$request, &$response) {
         $moduleName = $request->getRestModuleName();
         
@@ -158,7 +188,6 @@ class MiogenRest {
             MiogenTrace::log('Could not find file ' . $modulePath . ' when handling URL ' . $request->getUrl());
             $response->setStatusCode(500);
             $response->addError(new MiogenError(MiogenDictionary::MODULE_NOT_FOUND));
-            $response->addError(new MiogenError(MiogenDictionary::OTHER_MESSAGE));
         }
     }
 }
