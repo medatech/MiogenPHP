@@ -40,7 +40,7 @@ class HelloWorldCollection extends MiogenRestModule {
     public function doGet(&$request, &$response) {
         $root = $request->getMiogen()->getConfig('resourceRoot');
         
-        $doc = new MiogenDocument($root . $request->getUrl());
+        $doc = new MiogenDocument($root);
         $doc->setPrompt('Hello World Messages');
         $doc->setItemName('Message');
         

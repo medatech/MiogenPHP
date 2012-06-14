@@ -82,7 +82,7 @@ class ResponseContext {
         else {
             // Export to JSON (the default format)
             if (isset($this->responseData)) {
-                print(json_encode($this->responseData->getDocument(), JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES));
+                print(json_encode($this->responseData->getDocument()));
             }
         }
     }
