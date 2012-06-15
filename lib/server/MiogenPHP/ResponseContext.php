@@ -44,46 +44,24 @@ class ResponseContext {
     }
     
     private function outputBody () {
+        // Set up the globals used for the view execution
+        $miogen = &$this->miogen;
+        $data = &$this->responseData;
+                
         if (is_null($this->viewName)) {
             // TODO: See what content type the response must be
             
             $contentType = 'vnd.miogen+JSON';
             if ($contentType != 'vnd.miogen+JSON' || isset($_REQUEST['html'])) { // Temp render to HTML
-                $this->viewName = 'miogen-html';
+
+                require(dirname(__FILE__) . '/views/html.php');
             }
-        }
-        
-        if (!is_null($this->viewName)) {
-            // Set up the globals used for the template execution
-            $miogen = &$this->miogen;
-            $data = &$this->responseData;
-            
-            require($this->miogen->getConfig('viewPath') . $this->viewName . '.php');
-//
-//            // Render the template
-//            $smarty = new Smarty;
-//            $smarty->setTemplateDir('./views')
-//                ->setCompileDir('./Miogen/cache/smarty/views_c')
-//                ->setCacheDir('./Miogen/cache/smarty/cache');
-//
-//            $smarty->debugging = false;
-//            $smarty->caching = false;
-//            $smarty->cache_lifetime = 120;
-//
-//            if (!is_null($this->responseData)) {
-//                $smarty->assign('data', $this->responseData);
-//            }
-//            else {
-//                $smarty->assign('data', array());
-//            }
-//
-//            $smarty->display(APP_ROOT . '/views/' . $this->viewName . '.tpl');
+            elseif (isset($this->responseData)) {
+                print(json_encode($this->responseData->getDocument(), JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES));
+            } 
         }
         else {
-            // Export to JSON (the default format)
-            if (isset($this->responseData)) {
-                print(json_encode($this->responseData->getDocument(), JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES));
-            }
+            require($this->miogen->getConfig('viewPath') . $this->viewName . '.php');
         }
     }
     
