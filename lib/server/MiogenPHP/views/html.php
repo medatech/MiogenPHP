@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title><?php print($data->getPrompt(); ?></title>
+        <title><?php print($data->getPrompt()); ?></title>
         <meta charset="UTF-8">
     </head>
     <body>
