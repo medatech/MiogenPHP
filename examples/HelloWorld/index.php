@@ -16,7 +16,7 @@ $restConfig = array(
     ),
     'controllerPath' => APP_ROOT . DIRECTORY_SEPARATOR . 'controllers',
     'resourceRoot' => (@$_SERVER['HTTPS'] == 'on' ? 'https://' : 'http://') .
-                      ($_SERVER['SERVER_PORT'] == '80' ? '' : ':80') .
+                      ($_SERVER['SERVER_PORT'] == '80' ? '' : ':' . $_SERVER['SERVER_PORT']) .
                        $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'],
     'viewPath' => APP_ROOT . DIRECTORY_SEPARATOR  . 'views'
 );

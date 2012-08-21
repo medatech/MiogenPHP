@@ -8,5 +8,9 @@ class MiogenError {
         $this->message = $message;
     }
     
+    public function getMessage () {
+        return $this->message;
+    }
+    
 }
 ?>

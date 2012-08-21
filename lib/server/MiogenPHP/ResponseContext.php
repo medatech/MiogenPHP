@@ -9,6 +9,7 @@ class ResponseContext {
     var $viewName = null;
     var $responseData = null;
     var $document = null;
+    var $contentType = null;
     
     public function __construct (&$miogen) {
         $this->miogen = &$miogen;
@@ -39,8 +40,65 @@ class ResponseContext {
     }
     
     public function render () {
+        $this->contentType = $this->getContentType();
+        
         $this->outputHeaders();
-        $this->outputBody();
+        if (count($this->errors) > 0) {
+            $this->outputErrors();
+        }
+        else {
+            $this->outputBody();
+        }
+    }
+    
+    private function outputErrors () {
+        for ($i = 0; $i < count($this->errors); $i += 1) {
+            print($this->errors[$i]->getMessage() . "\r\n");
+        }
+    }
+    
+    private function getContentType () {
+        return $this->getPreferredContentType(array('text/html', 'vnd.miogen+json'));
+    }
+    
+    /**
+     * Returns the lowercase preferred type based on the client accept types
+     */
+    function getPreferredContentType($supportedTypes) {
+        
+        $clientAcceptTypes = array();
+        
+        // Accept header is case insensitive, and whitespace isn’t important
+        $accept = strtolower(str_replace(' ', '', $_SERVER['HTTP_ACCEPT']));
+        $acceptParts = explode(',', $accept);
+        foreach ($acceptParts as $type) {
+            $quality = 1;
+            
+            // See if the quality was defined by the client
+            if (strpos($type, ';q=') !== false) {
+                // Split the type and the quality
+                list($type, $quality) = explode(';q=', $type);
+            }
+            
+            if ($quality > 0) {
+                $clientAcceptTypes[$type] = $quality;
+            }
+        }
+        
+        // Sort them in order of preference
+        arsort($clientAcceptTypes);
+        
+        for ($i = 0; $i < count($supportedTypes); $i += 1) {
+            $supportedTypes[$i] = strtolower($supportedTypes[$i]);
+        }
+        // Now find the preferred match
+        foreach ($clientAcceptTypes as $type => $quality) {
+            if (in_array($type, $supportedTypes)) {
+                return $type;
+            }
+        }
+        // Could not satisfy the supported types
+        return null;
     }
     
     private function outputBody () {
@@ -49,16 +107,15 @@ class ResponseContext {
         $data = &$this->responseData;
                 
         if (is_null($this->viewName)) {
-            // TODO: See what content type the response must be
-            
-            $contentType = 'vnd.miogen+JSON';
-            if ($contentType != 'vnd.miogen+JSON' || isset($_REQUEST['html'])) { // Temp render to HTML
-
+            if ($this->contentType == 'text/html') { // Temp render to HTML
                 require(dirname(__FILE__) . '/views/html.php');
             }
-            elseif (isset($this->responseData)) {
-                print(json_encode($this->responseData->getDocument(), JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES));
-            } 
+            elseif ($this->contentType == 'vnd.miogen+json') {
+                // Render the body if there is one
+                if (isset($this->responseData)) {
+                    print(json_encode($this->responseData->getDocument(), JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES));
+                }
+            }
         }
         else {
             require($this->miogen->getConfig('viewPath') . $this->viewName . '.php');
@@ -66,8 +123,15 @@ class ResponseContext {
     }
     
     private function outputHeaders () {
-        foreach ($this->headers as $key => $value) {
-            header($key, $value);
+        if (!in_array($this->contentType, array('text/html', 'vnd.miogen+json'))) {
+            header('HTTP/1.1 415 Unsupported Media Type');
+        }
+        else {
+            header('HTTP/1.1 ' . $this->statusCode . ' ' . $this->getStatusMessage());
+            header('Content-Type: ' . $this->getContentType());
+            foreach ($this->headers as $key => $value) {
+                header($key, $value);
+            }
         }
     }
 
