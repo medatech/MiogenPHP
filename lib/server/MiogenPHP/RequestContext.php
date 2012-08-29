@@ -42,6 +42,15 @@ class RequestContext {
         }
     }
     
+    public function getParameter($key, $defaultValue = '') {
+        if (isset($this->parameters[$key])) {
+            return count($this->parameters[$key]) > 0 ? $this->parameters[$key][0] : $defaultValue;
+        }
+        else {
+            return $defaultValue;
+        }
+    }
+    
     public function getMethod() {
         return $_SERVER['REQUEST_METHOD'];
     }

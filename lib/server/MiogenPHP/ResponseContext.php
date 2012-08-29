@@ -113,7 +113,7 @@ class ResponseContext {
             elseif ($this->contentType == 'vnd.miogen+json') {
                 // Render the body if there is one
                 if (isset($this->responseData)) {
-                    print(json_encode($this->responseData->getDocument(), JSON_PRETTY_PRINT + JSON_UNESCAPED_SLASHES));
+                    print(json_encode($this->responseData->getDocument()));
                 }
             }
         }

@@ -39,6 +39,7 @@ div.miogen-widget {
     display: block;
     height: auto;
     border: 2px solid #3b679e;
+    background-color: #ffffff;
     
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -79,7 +80,35 @@ div.miogen-widget div.widget-body {
     -moz-border-radius-bottomleft: 5px;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+    
+    overflow: auto;
 }
 
 div.pad {
+}
+
+/* Grid View */
+
+table.grid-view {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.grid-view td,
+table.grid-view th {
+    text-align: left;
+    padding: 5px;
+}
+
+table.grid-view tbody tr:hover {
+    background-color: #efefef;
+    cursor: pointer;
+}
+
+table.grid-view th {
+    background-color: #9c9c9c;
+}
+
+table.grid-view tr.selected {
+    background-color: #dfdfdf;
 }
