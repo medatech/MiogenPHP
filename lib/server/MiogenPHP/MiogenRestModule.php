@@ -1,8 +1,11 @@
 <?php
 
 class MiogenRestModule {
-    function MiogenRestModule() {
-        
+    
+    var $restEngine;
+    
+    function MiogenRestModule(&$restEngine) {
+        $this->restEngine = &$restEngine;
     }
     
     public function doGet(&$request, &$response) {

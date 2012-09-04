@@ -6,6 +6,7 @@ class RequestContext {
     var $url = null;
     var $restModuleName = null;
     var $parameters = array();
+    var $method = 'GET';
     
     public function __construct (&$miogen) {
         $this->miogen = &$miogen;
@@ -31,7 +32,7 @@ class RequestContext {
         return $this->restModuleName;
     }
     
-    public function setParameter($key, $value) {
+    public function setParameter ($key, $value) {
         if (isset($this->parameters[$key])) {
             // Append it
             $this->parameters[$key][] = $value;
@@ -42,7 +43,7 @@ class RequestContext {
         }
     }
     
-    public function getParameter($key, $defaultValue = '') {
+    public function getParameter ($key, $defaultValue = '') {
         if (isset($this->parameters[$key])) {
             return count($this->parameters[$key]) > 0 ? $this->parameters[$key][0] : $defaultValue;
         }
@@ -51,8 +52,16 @@ class RequestContext {
         }
     }
     
-    public function getMethod() {
-        return $_SERVER['REQUEST_METHOD'];
+    public function getMethod () {
+        return $this->method;
+    }
+    
+    public function setMethod ($method) {
+        $this->method = $method;
+    }
+    
+    public function getRawDocument () {
+        return array();
     }
 }
 ?>

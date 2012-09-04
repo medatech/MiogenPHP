@@ -23,6 +23,10 @@ class ResponseContext {
         $this->statusCode = $code;
     }
     
+    public function getStatusCode () {
+        return $this->statusCode;
+    }
+    
     public function addError ($error) {
         $this->errors[] = $error;
     }

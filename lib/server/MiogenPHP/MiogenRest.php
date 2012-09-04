@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT MIT License
  */
 
-require_once('RequestContext.php');
+require_once('HttpRequestContext.php');
 require_once('ResponseContext.php');
 require_once('MiogenError.php');
 require_once('MiogenTrace.php');
@@ -61,6 +61,8 @@ class MiogenRest {
         if (substr($this->config['viewPath'], -1) != DIRECTORY_SEPARATOR) {
             $this->config['viewPath'] .= DIRECTORY_SEPARATOR;
         }
+        
+        $this->initURLMappings();
     }
     
     /**
@@ -80,17 +82,22 @@ class MiogenRest {
     }
     
     /**
-    * Process the URL request as a Rest request and return the response context
-    * that contains the response status codes and content ready to send to the client.
-    * @param string $url The URL to process taken from the root of the web server and
-    *                    starts with a forward slash
-    * @return ResponseContext
-    */
-    public function &process ($url) {
-        $request = new RequestContext($this);
-        $response = new ResponseContext($this);
+     * Performs a local get request against the rest engine
+     * @param String $url The URL of the item to get
+     */
+    public function &get ($url) {
+        if (strpos ($url, $this->config['serverRoot']) === 0) {
+            // This is fully qualified URL, but we just want the relative
+            $url = substr($url, strlen($this->config['serverRoot']));
+        }
         
-        $request->setUrl($url);
+        $requestContext = new RequestContext($this);
+        $requestContext->setMethod('GET');
+        $responseContext = $this->process($url, $requestContext);
+        return $responseContext;
+    }
+    
+    private function initUrlMappings () {
         // Generate the regular expressions for each of the URLs
         foreach($this->config['urls'] as $moduleUrl => $module) {
             $urlConfig = array(
@@ -113,6 +120,25 @@ class MiogenRest {
             
             $this->configRegexMatches[] = $urlConfig;
         }
+    }
+    
+    /**
+    * Process the URL request as a Rest request and return the response context
+    * that contains the response status codes and content ready to send to the client.
+    * @param string $url The URL to process taken from the root of the web server and
+    *                    starts with a forward slash
+    * @return ResponseContext
+    */
+    public function &process ($url, &$requestContext = null) {
+        if (is_null($requestContext)) {
+            $request = new HttpRequestContext($this);
+        }
+        else {
+            $request = &$requestContext;
+        }
+        $response = new ResponseContext($this);
+        
+        $request->setUrl($url);
         
         // Test each one until we find a match
         for ($i = 0; $i < count($this->configRegexMatches); $i += 1) {
@@ -150,13 +176,12 @@ class MiogenRest {
     function executeModule (&$request, &$response) {
         $moduleName = $request->getRestModuleName();
         
-        $modulePath = $this->config['controllerPath'] . DIRECTORY_SEPARATOR . $moduleName . '.php';
-
+        $modulePath = $this->config['controllerPath'] . $moduleName . '.php';
         if (file_exists($modulePath)) {
             require_once($modulePath);
-        
+            
             // Instanciate the module
-            $module = new $moduleName();
+            $module = new $moduleName($this);
             switch ($request->getMethod()) {
                 case 'GET': {
                     $module->doGet($request, $response);
