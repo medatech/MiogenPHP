@@ -7,7 +7,6 @@ class ResponseContext {
     var $errors = array();
     var $headers = array();
     var $viewName = null;
-    var $responseData = null;
     var $document = null;
     var $contentType = null;
     
@@ -37,10 +36,6 @@ class ResponseContext {
     
     public function setViewName ($name) {
         $this->viewName = $name;
-    }
-    
-    public function setResponseData (&$data) {
-        $this->responseData = &$data;
     }
     
     public function render () {
@@ -108,7 +103,7 @@ class ResponseContext {
     private function outputBody () {
         // Set up the globals used for the view execution
         $miogen = &$this->miogen;
-        $data = &$this->responseData;
+        $data = &$this->document;
                 
         if (is_null($this->viewName)) {
             if ($this->contentType == 'text/html') { // Temp render to HTML
@@ -116,8 +111,8 @@ class ResponseContext {
             }
             elseif ($this->contentType == 'vnd.miogen+json') {
                 // Render the body if there is one
-                if (isset($this->responseData)) {
-                    print(json_encode($this->responseData->getDocument()));
+                if (isset($this->document)) {
+                    print(json_encode($this->document->getDocument()));
                 }
             }
         }
@@ -141,6 +136,10 @@ class ResponseContext {
 
     public function setDocument(&$document) {
         $this->document = &$document;
+    }
+    
+    public function &getDocument () {
+        return $this->document;
     }
     
     private function getStatusMessage() {

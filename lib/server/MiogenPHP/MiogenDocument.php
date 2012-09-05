@@ -98,6 +98,16 @@ class MiogenDocument {
         }
     }
     
+    public function &getItem ($index) {
+        if (isset($this->col['items']) && count($this->col['items']) > 0) {
+            return $this->col['items'][0];
+        }
+        else {
+            $null = null;
+            return $null;
+        }
+    }
+    
     public function addTemplate(&$template, $collectionTemplate = false) {
         if (!isset($this->col['templates'])) {
             $this->col['templates'] = array(&$template);
@@ -122,6 +132,16 @@ class MiogenDocument {
     
     public function &getCollectionTemplate () {
         return $this->collectionTemplate;
+    }
+    
+    public function addStaleCollection ($uri) {
+        if (!isset($this->col['staleCollections'])) {
+            $this->col['staleCollections'] = array();
+        }
+        
+        $this->col['staleCollections'][] = array(
+            'href' => $uri
+        );
     }
 }
 ?>
