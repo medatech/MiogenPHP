@@ -76,8 +76,8 @@ div.miogen-widget h1 {
     font-size: 14px;
     margin: 0px;
     padding: 0px;
-        text-shadow: 1px 1px 2px #4079A5;
-        filter: dropshadow(color=#4079A5, offx=1, offy=1);
+    text-shadow: 1px 1px 2px #4079A5;
+    
 }
 
 div.miogen-widget div.widget-body {
@@ -227,4 +227,8 @@ form.data-form div.data-field input[type=text] {
     padding: 5px;
     border: 1px solid #9c9c9c;
     font-size: 12px;
+}
+
+form.data-form div.checkbox label {
+    display: inline;
 }
