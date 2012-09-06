@@ -6,6 +6,7 @@ class RequestContext {
     var $url = null;
     var $restModuleName = null;
     var $parameters = array();
+    var $urlParameters = array();
     var $method = 'GET';
     
     public function __construct (&$miogen) {
@@ -16,8 +17,9 @@ class RequestContext {
         return $this->miogen;
     }
     
-    public function setUrl ($url) {
+    public function setUrl ($url, $urlParams) {
         $this->url = $url;
+        $this->urlParameters = $urlParams;
     }
     
     public function getUrl () {
@@ -62,6 +64,15 @@ class RequestContext {
     
     public function getRawDocument () {
         return array();
+    }
+    
+    public function getUrlParameter ($key, $defaultValue = '') {
+        if (isset($this->urlParameters[$key])) {
+            return $this->urlParameters[$key];
+        }
+        else {
+            return $defaultValue;
+        }
     }
 }
 ?>

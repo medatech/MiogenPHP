@@ -137,5 +137,13 @@ class MiogenDataField {
     public function getMax () {
         return isset($this->max) ? $this->max : null;
     }
+    
+    public function setRel ($rel) {
+        $this->rel = $rel;
+    }
+    
+    public function getRel () {
+        return isset($this->rel) ? $this->rel : null;
+    }
 }
 ?>

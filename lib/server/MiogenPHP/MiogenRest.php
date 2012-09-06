@@ -129,16 +129,18 @@ class MiogenRest {
     *                    starts with a forward slash
     * @return ResponseContext
     */
-    public function &process ($url, &$requestContext = null) {
+    public function &process ($url, &$requestContext = null, $urlParams = array()) {
         if (is_null($requestContext)) {
             $request = new HttpRequestContext($this);
+            $qs = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+            parse_str($qs, $urlParams);
         }
         else {
             $request = &$requestContext;
         }
         $response = new ResponseContext($this);
         
-        $request->setUrl($url);
+        $request->setUrl($url, $urlParams);
         
         // Test each one until we find a match
         for ($i = 0; $i < count($this->configRegexMatches); $i += 1) {

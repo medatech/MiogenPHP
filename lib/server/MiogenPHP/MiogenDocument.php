@@ -2,6 +2,7 @@
 
 require_once('MiogenItem.php');
 require_once('MiogenTemplate.php');
+require_once('MiogenQuery.php');
 
 class MiogenDocument {
     var $collection = array('collection' => array());
@@ -108,6 +109,15 @@ class MiogenDocument {
         }
     }
     
+    public function addQuery(&$query) {
+        if (!isset($this->col['queries'])) {
+            $this->col['queries'] = array(&$query);
+        }
+        else {
+            $this->col['queries'][] = &$query;
+        }
+    }
+    
     public function addTemplate(&$template, $collectionTemplate = false) {
         if (!isset($this->col['templates'])) {
             $this->col['templates'] = array(&$template);
@@ -142,6 +152,14 @@ class MiogenDocument {
         $this->col['staleCollections'][] = array(
             'href' => $uri
         );
+    }
+    
+    public function setTotalCount ($count) {
+        $this->col['totalCount'] = $count;
+    }
+    
+    public function setStartIndex ($index) {
+        $this->col['startIndex'] = $index;
     }
 }
 ?>
