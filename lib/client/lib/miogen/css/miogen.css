@@ -13,6 +13,7 @@ body {
 div.miogen-page {
     width: 100%;
     height: 100%;
+    overflow: hidden;
     
     background: #ffffff; /* Old browsers */
     /* IE9 SVG, needs conditional override of 'filter' to 'none' */
@@ -98,6 +99,20 @@ div.pad {
 
 /* Grid View */
 
+.scroll {
+    width: 100%;
+    overflow: auto;
+}
+
+div.grid-view {
+    width: 100%;
+    height: 100%;
+}
+
+div.grid-view div.header {
+    width: auto%;
+}
+
 table.grid-view {
     width: 100%;
     border-collapse: collapse;
@@ -114,10 +129,7 @@ table.grid-view tbody tr:hover {
     cursor: pointer;
 }
 
-table.grid-view th {
-    font-weight: normal;
-    color: #444444;
-    
+div.grid-view div.header {
     border-bottom: 1px solid #C5C9CC;
     border-top: 1px solid #ffffff;
     
@@ -131,7 +143,11 @@ table.grid-view th {
     background: -ms-linear-gradient(top,  #ffffff 0%,#e5e5e5 100%); /* IE10+ */
     background: linear-gradient(to bottom,  #ffffff 0%,#e5e5e5 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-8 */
+}
 
+table.grid-view th {
+    font-weight: normal;
+    color: #444444;
 }
 
 table.grid-view tr.selected {
@@ -231,4 +247,13 @@ form.data-form div.data-field input[type=text] {
 
 form.data-form div.checkbox label {
     display: inline;
+}
+
+/* way the hell off screen */
+.scrollbar-measure {
+    width: 100px;
+    height: 100px;
+    overflow: scroll;
+    position: absolute;
+    top: -9999px;
 }
