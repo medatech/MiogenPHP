@@ -47,6 +47,16 @@
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Button.html">Miogen.Component.Button</a></li>
             
+                <li><a href="..&#x2F;classes/Miogen.Component.Checkbox.html">Miogen.Component.Checkbox</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.ComboBox.html">Miogen.Component.ComboBox</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.Label.html">Miogen.Component.Label</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.Textbox.html">Miogen.Component.Textbox</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Widget.ItemWidget.html">Miogen.Widget.ItemWidget</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -323,49 +333,52 @@ Miogen.define(&#x27;Component.BaseComponent&#x27;, Class.extend({
     },
     
     &#x2F;**
-     * Disable the component and child components.
-     * @method disable
+     * Sets or gets a component attribute.
+     * 
+     * @method attr
+     * @param {String} key The attribute to set or get.
+     * @param {mixed} [value] If supplied, the attribute will be set to this value.
+     * @return {mixed} The attribute after any modifications.
      *&#x2F;
-    disable: function () {
-        var i;
+    attr: function (key, value) {
+        var propogate = false;
         
-        if (this.el !== null) {
-            $(this.el).attr(&#x27;disabled&#x27;, true);
+        if (typeof(value) !== &#x27;undefined&#x27;) {
+            this.config[key] = value;
+            
+            if (this.el !== null) {
+                switch (key) {
+                    case &#x27;disabled&#x27;:
+                        if (value === true) {
+                            this.el.attr(&#x27;disabled&#x27;, true);
+                        }
+                        else {
+                            this.el.removeAttr(&#x27;disabled&#x27;);
+                        }
+                        propogate = true;
+                        break;
+                    case &#x27;visible&#x27;:
+                        if (value === true) {
+                            this.el.removeClass(&#x27;hidden&#x27;);
+                        }
+                        else {
+                            this.el.addClass(&#x27;hidden&#x27;);
+                        }
+                        break;
+                }
+            }
+        }
+        else {
+            value = this.config[key] || null;
         }
         
-        &#x2F;&#x2F; Disable the child components
-        for (i = 0; i &lt; this.components.length; i += 1) {
-            this.components[i].disable();
+        if (propogate) {
+            $.each(this.components, function (index, comp) {
+                comp.attr(key, value);
+            });
         }
         
-        this.config.disabled = true;
-    },
-    
-    &#x2F;**
-     * Enable the component and child components.
-     * @method enable
-     *&#x2F;
-    enable: function () {
-        var i;
-        
-        if (this.el !== null) {
-            $(this.el).removeAttr(&#x27;disabled&#x27;);
-        }
-        this.config.disabled = true;
-        
-        &#x2F;&#x2F; Enable the child components
-        for (i = 0; i &lt; this.components.length; i += 1) {
-            this.components[i].Enable();
-        }
-    },
-    
-    &#x2F;**
-     * Returns whether the component is disabled.
-     * @method isDisabled
-     * @return {boolean} True if disabled, false if enabled.
-     *&#x2F;
-    isDisabled: function () {
-        return this.config.disabled;
+        return value;
     },
     
     &#x2F;**

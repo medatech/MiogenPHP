@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js&#x2F;Component&#x2F;Button.js</title>
+    <title>js&#x2F;Component&#x2F;Checkbox.js</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -96,48 +96,41 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js&#x2F;Component&#x2F;Button.js</h1>
+                        <h1 class="file-heading">File: js&#x2F;Component&#x2F;Checkbox.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x2F;*globals Miogen,$ *&#x2F;
 
 &#x2F;**
- * A Button UI component that can receive press events from the user.
+ * A Checkbox UI component.
  * 
- * @class Miogen.Component.Button
+ * @class Miogen.Component.Checkbox
  * @extends Miogen.Component.BaseComponent
  * @constructor
  *&#x2F;
 Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
     
-    Miogen.define(&#x27;Component.Button&#x27;, Miogen.Component.BaseComponent.extend({
+    Miogen.define(&#x27;Component.Checkbox&#x27;, Miogen.Component.BaseComponent.extend({
         
         &#x2F;**
          * Construct a new button component.
          * 
          * @method construct
-         * @param {Object} [cfg] The configuration object for this button. See Miogen.Component.BaseComponent construct for additional options.
-         *     @param {String} [cfg.label] The button label.
-         *     @param {Function} [cfg.click] The click event to call when the button is clicked.
+         * @param {Object} [cfg] The configuration object for this checkbox. See Miogen.Component.BaseComponent construct for additional options.
+         *     @param {String} [cfg.label] The checkbox label. Defaults to empty string.
+         *     @param {Boolean} [cfg.checked] Whether the checkbox should be checked or not. Defaults to false.
          * 
          * @example
-         *     var button = new Miogen.Component.Button({
-         *         label: &#x27;Press Me&#x27;,
-         *         click: function () {
-         *             alert(&#x27;Thanks&#x27;);
-         *         }
-         *     });
-         *     
-         *     button.build(function () {
-         *         alert(&#x27;Button has been built&#x27;);
+         *     var checkbox = new Miogen.Component.Checkbox({
+         *         label: &#x27;Agree to terms&#x27;
          *     });
          *&#x2F;
         construct: function (cfg) {
             var config = {
-                label: &#x27;Button&#x27;,
-                disabled: false
-            };
+                label: &#x27;&#x27;,
+                checked: false
+            }
             
             Miogen.mixIn(config, cfg);
             
@@ -145,40 +138,31 @@ Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
         },
         
         &#x2F;**
-         * Builds the &amp;lt;button&amp;gt; HTML element with the specified properties in the constructor.
+         * Builds the &amp;lt;input type=&quot;checkbox&quot;&amp;gt; HTML element label in a surrounding &amp;lt;div&amp;gt; and the specified properties in the constructor.
          * 
          * @method build
          * @param {Function} [cb] Callback to call when the component has been built.
          * 
          * @example
-         *     var button = new Miogen.Component.Button({
-         *         label: &#x27;Press Me&#x27;,
-         *         click: function () {
-         *             alert(&#x27;Thanks&#x27;);
-         *         }
+         *     var checkbox = new Miogen.Component.Checkbox({
+         *         label: &#x27;Agree to terms&#x27;
          *     });
          *     
-         *     button.build(function () {
-         *         alert(&#x27;Button has been built&#x27;);
+         *     checkbox.build(function () {
+         *         alert(&#x27;Checkbox has been built&#x27;);
          *     });
          *&#x2F;
         build: function (cb) {
-            if (typeof (cb) === &#x27;undefined&#x27;) {
-                cb = function () {};
-            }
-            else if (typeof(cb) !== &#x27;function&#x27;) {
-                throw &quot;Parameter 1 expected to be a function&quot;;
-            }
-            
-            
-            this.el = $(&#x27;&lt;button&gt;&lt;&#x2F;button&gt;&#x27;);
-            this.el.text(this.config.label);
+            var t = this;
+            this.el = $(&#x27;&lt;div class=&quot;checkbox&quot;&gt;&lt;label&gt;&lt;input type=&quot;checkbox&quot;&#x27; + (this.config.checked ? &#x27; checked&#x27; : &#x27;&#x27;) + &#x27;&gt;&lt;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;label&gt;&lt;&#x2F;div&gt;&#x27;);
+            $(&#x27;label span&#x27;, this.el).text(this.config.label);
             if (this.config.disabled) {
-                this.el.prop(&#x27;disabled&#x27;, true);
+                $(&#x27;input&#x27;, this.el).prop(&#x27;disabled&#x27;, true);
             }
-            if (this.config.click) {
-                this.el.click(this.config.click);
-            }
+            
+            $(&#x27;input&#x27;, this.el).change(function () {
+                t.onChange(t.attr(&#x27;value&#x27;));
+            });
             cb.call(this);
         },
         
@@ -191,12 +175,33 @@ Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
          * @return {mixed} The attribute after any modifications.
          *&#x2F;
         attr: function (key, value) {
-            if (key === &#x27;label&#x27;) {
+            if (key === &#x27;value&#x27;) {
+                if (typeof (value) === &#x27;undefined&#x27;) {
+                    &#x2F;&#x2F; Get the current value
+                    if (this.el !== null) {
+                        return $(&#x27;input&#x27;, this.el).is(&#x27;:checked&#x27;);
+                    }
+                    else {
+                        return this.config.value || null;
+                    }
+                }
+                else {
+                    &#x2F;&#x2F; Set the value
+                    if (this.el !== null) {
+                        $(&#x27;input&#x27;, this.el).prop(&#x27;checked&#x27;, value === true);
+                    }
+                    else {
+                        this.config.value = value;
+                    }
+                    return value;
+                }
+            }
+            else if (key === &#x27;label&#x27;) {
                 if (typeof (value) !== &#x27;undefined&#x27;) {
                     this.config.label = value;
                     
                     if (this.el !== null) {
-                        this.el.text(value);
+                        $(&#x27;label span&#x27;, this.el).text(value);
                     }
                     return value;
                 }
@@ -205,10 +210,9 @@ Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
                 }
             }
             else {
-                this._super(key, value);
+                return this._super(key, value);
             }
         }
-        
     }));
     
 });

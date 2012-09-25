@@ -19,6 +19,42 @@
             "fors": {},
             "namespaces": {}
         },
+        "js/Component/Checkbox.js": {
+            "name": "js/Component/Checkbox.js",
+            "modules": {},
+            "classes": {
+                "Miogen.Component.Checkbox": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Component/ComboBox.js": {
+            "name": "js/Component/ComboBox.js",
+            "modules": {},
+            "classes": {
+                "Miogen.Component.ComboBox": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Component/Label.js": {
+            "name": "js/Component/Label.js",
+            "modules": {},
+            "classes": {
+                "Miogen.Component.Label": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Component/Textbox.js": {
+            "name": "js/Component/Textbox.js",
+            "modules": {},
+            "classes": {
+                "Miogen.Component.Textbox": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "js/Data/MiogenDataField.js": {
             "name": "js/Data/MiogenDataField.js",
             "modules": {},
@@ -43,7 +79,9 @@
         "js/Widget/ItemWidget.js": {
             "name": "js/Widget/ItemWidget.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "Miogen.Widget.ItemWidget": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -84,6 +122,76 @@
             "line": 3,
             "description": "A Button UI component that can receive press events from the user.",
             "extends": "Miogen.Component.BaseComponent",
+            "is_constructor": 1
+        },
+        "Miogen.Component.Checkbox": {
+            "name": "Miogen.Component.Checkbox",
+            "shortname": "Miogen.Component.Checkbox",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Component/Checkbox.js",
+            "line": 3,
+            "description": "A Checkbox UI component.",
+            "extends": "Miogen.Component.BaseComponent",
+            "is_constructor": 1
+        },
+        "Miogen.Component.ComboBox": {
+            "name": "Miogen.Component.ComboBox",
+            "shortname": "Miogen.Component.ComboBox",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Component/ComboBox.js",
+            "line": 3,
+            "description": "A Combo Box UI component.",
+            "extends": "Miogen.Component.BaseComponent",
+            "is_constructor": 1
+        },
+        "Miogen.Component.Label": {
+            "name": "Miogen.Component.Label",
+            "shortname": "Miogen.Component.Label",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Component/Label.js",
+            "line": 3,
+            "description": "A label UI component.",
+            "extends": "Miogen.Component.BaseComponent",
+            "is_constructor": 1
+        },
+        "Miogen.Component.Textbox": {
+            "name": "Miogen.Component.Textbox",
+            "shortname": "Miogen.Component.Textbox",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Component/Textbox.js",
+            "line": 3,
+            "description": "A Textbox UI component.",
+            "extends": "Miogen.Component.BaseComponent",
+            "is_constructor": 1
+        },
+        "Miogen.Widget.ItemWidget": {
+            "name": "Miogen.Widget.ItemWidget",
+            "shortname": "Miogen.Widget.ItemWidget",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Widget/ItemWidget.js",
+            "line": 3,
+            "description": "A widget that controls the management of a single Migoen Item.",
+            "extends": "Miogen.Widget.BaseWidget",
             "is_constructor": 1
         },
         "Miogen": {
@@ -296,34 +404,31 @@
         {
             "file": "js/Component/BaseComponent.js",
             "line": 233,
-            "description": "Disable the component and child components.",
+            "description": "Sets or gets a component attribute.",
             "itemtype": "method",
-            "name": "disable",
-            "class": "Miogen.Component.BaseComponent"
-        },
-        {
-            "file": "js/Component/BaseComponent.js",
-            "line": 252,
-            "description": "Enable the component and child components.",
-            "itemtype": "method",
-            "name": "enable",
-            "class": "Miogen.Component.BaseComponent"
-        },
-        {
-            "file": "js/Component/BaseComponent.js",
-            "line": 270,
-            "description": "Returns whether the component is disabled.",
-            "itemtype": "method",
-            "name": "isDisabled",
+            "name": "attr",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The attribute to set or get.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If supplied, the attribute will be set to this value.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
             "return": {
-                "description": "True if disabled, false if enabled.",
-                "type": "Boolean"
+                "description": "The attribute after any modifications.",
+                "type": "Mixed"
             },
             "class": "Miogen.Component.BaseComponent"
         },
         {
             "file": "js/Component/BaseComponent.js",
-            "line": 279,
+            "line": 282,
             "description": "Fired when the value of the component has changed.",
             "itemtype": "event",
             "name": "onChange",
@@ -391,23 +496,185 @@
         {
             "file": "js/Component/Button.js",
             "line": 83,
-            "description": "Sets the button label.",
+            "description": "Sets or gets a component attribute.",
             "itemtype": "method",
-            "name": "setLabel",
+            "name": "attr",
             "params": [
                 {
-                    "name": "label",
-                    "description": "The label to set the button to.",
+                    "name": "key",
+                    "description": "The attribute to set or get.",
                     "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If supplied, the attribute will be set to this value.",
+                    "type": "Mixed",
+                    "optional": true
                 }
             ],
+            "return": {
+                "description": "The attribute after any modifications.",
+                "type": "Mixed"
+            },
             "class": "Miogen.Component.Button"
+        },
+        {
+            "file": "js/Component/Checkbox.js",
+            "line": 14,
+            "description": "Construct a new button component.",
+            "itemtype": "method",
+            "name": "construct",
+            "params": [
+                {
+                    "name": "cfg",
+                    "description": "The configuration object for this checkbox. See Miogen.Component.BaseComponent construct for additional options.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "label",
+                            "description": "The checkbox label. Defaults to empty string.",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "checked",
+                            "description": "Whether the checkbox should be checked or not. Defaults to false.",
+                            "type": "Boolean",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n    var checkbox = new Miogen.Component.Checkbox({\n        label: 'Agree to terms'\n    });"
+            ],
+            "class": "Miogen.Component.Checkbox"
+        },
+        {
+            "file": "js/Component/Checkbox.js",
+            "line": 38,
+            "description": "Builds the &lt;input type=\"checkbox\"&gt; HTML element label in a surrounding &lt;div&gt; and the specified properties in the constructor.",
+            "itemtype": "method",
+            "name": "build",
+            "params": [
+                {
+                    "name": "cb",
+                    "description": "Callback to call when the component has been built.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n    var checkbox = new Miogen.Component.Checkbox({\n        label: 'Agree to terms'\n    });\n    \n    checkbox.build(function () {\n        alert('Checkbox has been built');\n    });"
+            ],
+            "class": "Miogen.Component.Checkbox"
+        },
+        {
+            "file": "js/Component/Checkbox.js",
+            "line": 67,
+            "description": "Sets or gets a component attribute.",
+            "itemtype": "method",
+            "name": "attr",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The attribute to set or get.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If supplied, the attribute will be set to this value.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The attribute after any modifications.",
+                "type": "Mixed"
+            },
+            "class": "Miogen.Component.Checkbox"
+        },
+        {
+            "file": "js/Component/ComboBox.js",
+            "line": 88,
+            "description": "Sets or gets a component attribute.",
+            "itemtype": "method",
+            "name": "attr",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The attribute to set or get.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If supplied, the attribute will be set to this value.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The attribute after any modifications.",
+                "type": "Mixed"
+            },
+            "class": "Miogen.Component.ComboBox"
+        },
+        {
+            "file": "js/Component/Label.js",
+            "line": 41,
+            "description": "Sets or gets a component attribute.",
+            "itemtype": "method",
+            "name": "attr",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The attribute to set or get.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If supplied, the attribute will be set to this value.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The attribute after any modifications.",
+                "type": "Mixed"
+            },
+            "class": "Miogen.Component.Label"
+        },
+        {
+            "file": "js/Component/Textbox.js",
+            "line": 45,
+            "description": "Sets or gets a component attribute.",
+            "itemtype": "method",
+            "name": "attr",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The attribute to set or get.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If supplied, the attribute will be set to this value.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The attribute after any modifications.",
+                "type": "Mixed"
+            },
+            "class": "Miogen.Component.Textbox"
         },
         {
             "file": "js/Data/MiogenDataField.js",
             "line": 19,
             "description": "Gets the relative attribute to the current field",
-            "class": "Miogen"
+            "class": "Miogen.Widget.ItemWidget"
         },
         {
             "file": "js/Data/MiogenStore.js",
@@ -419,20 +686,23 @@
                     "description": "The config object\n     url String  The URI of hte item to get\n     success Function  The callback to call when the item has successfully been retrieved\n         (MiogenCollection|MigoenItem)\n     error Function  Called when the item cannot be retrieved\n         (MiogenModel store, XMLHttpRequest ajaxRequest, String errorText)"
                 }
             ],
-            "class": "Miogen"
+            "class": "Miogen.Widget.ItemWidget"
         },
         {
             "file": "js/ViewModel/PageViewModel.js",
             "line": 184,
             "description": "doc: MiogenDocument\nsuccess: function () {}\nerror: function (message) {}",
-            "class": "Miogen"
+            "class": "Miogen.Widget.ItemWidget"
         },
         {
             "file": "js/Widget/ItemWidget.js",
-            "line": 15,
+            "line": 24,
+            "description": "The miogen item that is currently being displayed within the widget",
             "itemtype": "property",
-            "name": "Miogen.Data.MiogenItem item\nThe miogen item that is currently being displayed within the widget",
-            "class": "Miogen"
+            "name": "item",
+            "type": "Miogen.Data.MiogenItem",
+            "defaultvalue": "null",
+            "class": "Miogen.Widget.ItemWidget"
         },
         {
             "file": "js/Miogen.js",

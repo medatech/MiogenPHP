@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js&#x2F;Data&#x2F;MiogenDataField.js</title>
+    <title>Miogen.Widget.ItemWidget</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -96,118 +96,190 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js&#x2F;Data&#x2F;MiogenDataField.js</h1>
+                        <h1>Miogen.Widget.ItemWidget Class</h1>
+<div class="box meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-Miogen.define(&#x27;Data.MiogenDataField&#x27;, Class.extend({
     
-    id: null,
-    attribute: null,
-    item: null,
-    fieldTemplate: null,
+        <div class="extends">
+            Extends Miogen.Widget.BaseWidget
+        </div>
     
-    construct: function (id, attribute, &#x2F;* MiogenItem|MiogenTemplate *&#x2F; item, fieldTemplate) {
-        this.id = id;
-        this.attribute = attribute;
-        this.item = item;
-        this.fieldTemplate = fieldTemplate;
-    },
+
     
-    getID: function () {
-        return this.id;
-    },
+        <div class="foundat">
+            Defined in: <a href="..&#x2F;files&#x2F;js_Widget_ItemWidget.js.html#l3"><code>js&#x2F;Widget&#x2F;ItemWidget.js:3</code></a>
+        </div>
     
-    &#x2F;**
-     * Gets the relative attribute to the current field
-     *&#x2F;
-    get: function (attributeQuery, &#x2F;* optional *&#x2F; defaultValue) {
-        var value;
+
+    
+
+    
+</div>
+
+
+
+<div class="box intro">
+    <p>A widget that controls the management of a single Migoen Item.</p>
+</div>
+
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_Miogen.Widget.ItemWidget" class="method item">
+    <h3 class="name"><code>Miogen.Widget.ItemWidget</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
         
-        if (typeof (defaultValue) === &#x27;undefined&#x27;) {
-            defaultValue = null;
-        }
+            
+                
+                <p>
+                
+                Defined in
+                
+            
         
-        &#x2F;&#x2F; First see if the value is in the item
-        value = this.item.get(this.attribute + &#x27;.&#x27; + attributeQuery, null);
         
-        if (value === null &amp;&amp; this.fieldTemplate !== null) {
-            &#x2F;&#x2F; Not in the item, so try the tempplate
-            value = Miogen.queryObject(this.fieldTemplate, attributeQuery, null);
-        }
+        <a href="..&#x2F;files&#x2F;js_Widget_ItemWidget.js.html#l3"><code>js&#x2F;Widget&#x2F;ItemWidget.js:3</code></a>
         
-        if (value === null) {
-            value = defaultValue;
-        }
+        </p>
+
+
         
-        return value;
-    },
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
     
-    set: function (attributeQuery, value) {
-        this.item.set(this.attribute + &#x27;.&#x27; + attributeQuery, value);
-    },
+
     
-    getPrompt: function () {
-        return this.get(&#x27;prompt&#x27;);
-    },
+
     
-    getValue: function () {
-        var value = this.get(&#x27;value&#x27;);
-        if (value === null) {
-            value = this.get(&#x27;defaultValue&#x27;);
-        }
-        return value;
-    },
+</div>
+
+    </div>
+
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+        
+        
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
+        
+        
+        
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+            
+
+            
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties extends">
+                        
+                            <li class="index-item property">
+                                <a href="#property_item">item</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+            
+
+            
+
+            
+        </div>
+
+        
+
+        
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+                
+                    <div id="property_item" class="property item">
+    <h3 class="name"><code>item</code></h3>
+    <span class="type">Miogen.Data.MiogenItem</span>
+
     
-    setValue: function (value) {
-        this.set(&#x27;value&#x27;, value);
-    },
+
     
-    getType: function () {
-        return this.get(&#x27;type&#x27;);
-    },
+
     
-    getQuery: function () {
-        return this.get(&#x27;query&#x27;);
-    },
+
     
-    getPromptField: function () {
-        return this.get(&#x27;promptField&#x27;);
-    },
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;js_Widget_ItemWidget.js.html#l24"><code>js&#x2F;Widget&#x2F;ItemWidget.js:24</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The miogen item that is currently being displayed within the widget</p>
+    </div>
+
     
-    isReadOnly: function () {
-        return this.get(&#x27;readOnly&#x27;, false);
-    },
+
     
-    getItem: function () {
-        return this.item;
-    },
+
     
-    getAttribute: function () {
-        return this.attribute;
-    },
-    
-    getMax: function (defaultValue) {
-        return this.get(&#x27;max&#x27;, defaultValue);
-    },
-    
-    getMin: function (defaultValue) {
-        return this.get(&#x27;min&#x27;, defaultValue);
-    },
-    
-    isRequired: function () {
-        return this.get(&#x27;required&#x27;, true);
-    },
-    
-    getDefaultValue: function (defaultValue) {
-        return this.get(&#x27;defaultValue&#x27;, defaultValue);
-    },
-    
-    getInheritedValue: function (defaultValue) {
-        return this.get(&#x27;inheritedValue&#x27;, defaultValue);
-    }
-}));
-    </pre>
+</div>
+
+                
+            </div>
+        
+
+        
+
+        
+    </div>
 </div>
 
                     </div>

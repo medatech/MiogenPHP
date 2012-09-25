@@ -47,6 +47,16 @@
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Button.html">Miogen.Component.Button</a></li>
             
+                <li><a href="..&#x2F;classes/Miogen.Component.Checkbox.html">Miogen.Component.Checkbox</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.ComboBox.html">Miogen.Component.ComboBox</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.Label.html">Miogen.Component.Label</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.Textbox.html">Miogen.Component.Textbox</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Widget.ItemWidget.html">Miogen.Widget.ItemWidget</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -90,6 +100,15 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+&#x2F;*globals Miogen,$ *&#x2F;
+
+&#x2F;**
+ * A widget that controls the management of a single Migoen Item.
+ * 
+ * @class Miogen.Widget.ItemWidget
+ * @extends Miogen.Widget.BaseWidget
+ * @constructor
+ *&#x2F;
 Miogen.require([&#x27;Widget.BaseWidget&#x27;,
                 &#x27;Component.Toolbar&#x27;,
                 &#x27;Component.Button&#x27;,
@@ -105,8 +124,10 @@ Miogen.require([&#x27;Widget.BaseWidget&#x27;,
         doc: null,
         
         &#x2F;**
-         * @property Miogen.Data.MiogenItem item
          * The miogen item that is currently being displayed within the widget
+         * @property item
+         * @type Miogen.Data.MiogenItem
+         * @defaultValue null
          *&#x2F;
         item: null,
         
@@ -154,7 +175,7 @@ Miogen.require([&#x27;Widget.BaseWidget&#x27;,
         },
         
         onFieldChange: function (field, value) {
-            this.toolbar.enable();
+            this.toolbar.attr(&#x27;disabled&#x27;, false);
         },
         
         build: function (cb) {
@@ -189,7 +210,7 @@ Miogen.require([&#x27;Widget.BaseWidget&#x27;,
         onItemLoad: function (uri) {
             var t = this;
             
-            this.toolbar.disable();
+            this.toolbar.attr(&#x27;disabled&#x27;, true);
             
             Miogen.getViewModel().get({
                 url: uri,
@@ -256,12 +277,12 @@ Miogen.require([&#x27;Widget.BaseWidget&#x27;,
         
         setItemDirty: function (isDirty) {
             if (isDirty) {
-                this.toolbarItems.save.enable();
-                this.toolbarItems.refresh.enable();
+                this.toolbarItems.save.attr(&#x27;disabled&#x27;, false);
+                this.toolbarItems.refresh.attr(&#x27;disabled&#x27;, false);
             }
             else {
-                this.toolbarItems.save.disable();
-                this.toolbarItems.refresh.disable();
+                this.toolbarItems.save.attr(&#x27;disabled&#x27;, true);
+                this.toolbarItems.refresh.attr(&#x27;disabled&#x27;, true);
             }
         },
         
@@ -280,25 +301,25 @@ Miogen.require([&#x27;Widget.BaseWidget&#x27;,
             var t = this;
             
             if (this.doc !== null) {
-                this.toolbarItems.save.setLabel(&#x27;Saving...&#x27;);
-                this.toolbarItems.save.disable();
-                this.toolbarItems.refresh.disable();
+                this.toolbarItems.save.attr(&#x27;label&#x27;, &#x27;Saving...&#x27;);
+                this.toolbarItems.save.attr(&#x27;disabled&#x27;, true);
+                this.toolbarItems.refresh.attr(&#x27;disabled&#x27;, true);
                 
                 Miogen.getViewModel().put({
                     doc: this.doc,
                     success: function () {
-                        t.toolbarItems.save.setLabel(&#x27;Save&#x27;);
+                        t.toolbarItems.save.attr(&#x27;label&#x27;, &#x27;Save&#x27;);
                         
-                        t.toolbarItems.saveLabel.show();
+                        t.toolbarItems.saveLabel.attr(&#x27;visible&#x27;, true);
                         setTimeout(function () {
-                            t.toolbarItems.saveLabel.hide();
+                            t.toolbarItems.saveLabel.attr(&#x27;visible&#x27;, false);
                         }, 3000);
                     },
                     error: function () {
                         &#x2F;&#x2F;console.log(&#x27;Save error&#x27;);
-                        t.toolbarItems.save.setLabel(&#x27;Save&#x27;);
-                        t.toolbarItems.save.enable();
-                        t.toolbarItems.refresh.enable();
+                        t.toolbarItems.save.attr(&#x27;label&#x27;, &#x27;Save&#x27;);
+                        t.toolbarItems.save.attr(&#x27;disabled&#x27;, false);
+                        t.toolbarItems.refresh.attr(&#x27;disabled&#x27;, false);
                     }
                 });
             }

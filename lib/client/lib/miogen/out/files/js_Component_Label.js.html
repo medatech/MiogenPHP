@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js&#x2F;Data&#x2F;MiogenDataField.js</title>
+    <title>js&#x2F;Component&#x2F;Label.js</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -96,117 +96,80 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js&#x2F;Data&#x2F;MiogenDataField.js</h1>
+                        <h1 class="file-heading">File: js&#x2F;Component&#x2F;Label.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-Miogen.define(&#x27;Data.MiogenDataField&#x27;, Class.extend({
+&#x2F;*globals Miogen,$ *&#x2F;
+
+&#x2F;**
+ * A label UI component.
+ * 
+ * @class Miogen.Component.Label
+ * @extends Miogen.Component.BaseComponent
+ * @constructor
+ *&#x2F;
+Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
     
-    id: null,
-    attribute: null,
-    item: null,
-    fieldTemplate: null,
-    
-    construct: function (id, attribute, &#x2F;* MiogenItem|MiogenTemplate *&#x2F; item, fieldTemplate) {
-        this.id = id;
-        this.attribute = attribute;
-        this.item = item;
-        this.fieldTemplate = fieldTemplate;
-    },
-    
-    getID: function () {
-        return this.id;
-    },
-    
-    &#x2F;**
-     * Gets the relative attribute to the current field
-     *&#x2F;
-    get: function (attributeQuery, &#x2F;* optional *&#x2F; defaultValue) {
-        var value;
+    Miogen.define(&#x27;Component.Label&#x27;, Miogen.Component.BaseComponent.extend({
         
-        if (typeof (defaultValue) === &#x27;undefined&#x27;) {
-            defaultValue = null;
+        construct: function (cfg) {
+            var config = {
+                text: &#x27;Label&#x27;,
+                visible: true,
+                className: null
+            }
+            
+            Miogen.mixIn(config, cfg);
+            
+            this._super(config);
+        },
+    
+        build: function (cb) {
+            this.el = $(&#x27;&lt;span&gt;&lt;&#x2F;span&gt;&#x27;);
+            this.el.text(this.config.text);
+            if (this.config.className !== null) {
+                this.el.addClass(this.config.className);
+            }
+            if (!this.config.visible) {
+                this.el.addClass(&#x27;hidden&#x27;);
+            }
+            if (this.config.click) {
+                this.el.click(this.config.click);
+            }
+            cb.call(this);
+        },
+        
+        &#x2F;**
+         * Sets or gets a component attribute.
+         * 
+         * @method attr
+         * @param {String} key The attribute to set or get.
+         * @param {mixed} [value] If supplied, the attribute will be set to this value.
+         * @return {mixed} The attribute after any modifications.
+         *&#x2F;
+        attr: function (key, value) {
+            if (key === &#x27;label&#x27;) {
+                if (typeof (value) !== &#x27;undefined&#x27;) {
+                    this.config.label = value;
+                    
+                    if (this.el !== null) {
+                        this.el.text(value);
+                    }
+                    return value;
+                }
+                else {
+                    return this.config.label;
+                }
+            }
+            else {
+                this._super(key, value);
+            }
         }
         
-        &#x2F;&#x2F; First see if the value is in the item
-        value = this.item.get(this.attribute + &#x27;.&#x27; + attributeQuery, null);
-        
-        if (value === null &amp;&amp; this.fieldTemplate !== null) {
-            &#x2F;&#x2F; Not in the item, so try the tempplate
-            value = Miogen.queryObject(this.fieldTemplate, attributeQuery, null);
-        }
-        
-        if (value === null) {
-            value = defaultValue;
-        }
-        
-        return value;
-    },
+    }));
     
-    set: function (attributeQuery, value) {
-        this.item.set(this.attribute + &#x27;.&#x27; + attributeQuery, value);
-    },
-    
-    getPrompt: function () {
-        return this.get(&#x27;prompt&#x27;);
-    },
-    
-    getValue: function () {
-        var value = this.get(&#x27;value&#x27;);
-        if (value === null) {
-            value = this.get(&#x27;defaultValue&#x27;);
-        }
-        return value;
-    },
-    
-    setValue: function (value) {
-        this.set(&#x27;value&#x27;, value);
-    },
-    
-    getType: function () {
-        return this.get(&#x27;type&#x27;);
-    },
-    
-    getQuery: function () {
-        return this.get(&#x27;query&#x27;);
-    },
-    
-    getPromptField: function () {
-        return this.get(&#x27;promptField&#x27;);
-    },
-    
-    isReadOnly: function () {
-        return this.get(&#x27;readOnly&#x27;, false);
-    },
-    
-    getItem: function () {
-        return this.item;
-    },
-    
-    getAttribute: function () {
-        return this.attribute;
-    },
-    
-    getMax: function (defaultValue) {
-        return this.get(&#x27;max&#x27;, defaultValue);
-    },
-    
-    getMin: function (defaultValue) {
-        return this.get(&#x27;min&#x27;, defaultValue);
-    },
-    
-    isRequired: function () {
-        return this.get(&#x27;required&#x27;, true);
-    },
-    
-    getDefaultValue: function (defaultValue) {
-        return this.get(&#x27;defaultValue&#x27;, defaultValue);
-    },
-    
-    getInheritedValue: function (defaultValue) {
-        return this.get(&#x27;inheritedValue&#x27;, defaultValue);
-    }
-}));
+});
     </pre>
 </div>
 
