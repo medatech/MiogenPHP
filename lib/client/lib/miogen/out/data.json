@@ -1,0 +1,817 @@
+{
+    "project": {},
+    "files": {
+        "js/Component/BaseComponent.js": {
+            "name": "js/Component/BaseComponent.js",
+            "modules": {},
+            "classes": {
+                "Miogen.Component.BaseComponent": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Component/Button.js": {
+            "name": "js/Component/Button.js",
+            "modules": {},
+            "classes": {
+                "Miogen.Component.Button": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Data/MiogenDataField.js": {
+            "name": "js/Data/MiogenDataField.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Data/MiogenStore.js": {
+            "name": "js/Data/MiogenStore.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/ViewModel/PageViewModel.js": {
+            "name": "js/ViewModel/PageViewModel.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Widget/ItemWidget.js": {
+            "name": "js/Widget/ItemWidget.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "js/Miogen.js": {
+            "name": "js/Miogen.js",
+            "modules": {},
+            "classes": {
+                "Miogen": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "Miogen.Component.BaseComponent": {
+            "name": "Miogen.Component.BaseComponent",
+            "shortname": "Miogen.Component.BaseComponent",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Component/BaseComponent.js",
+            "line": 1,
+            "description": "The base of all components providing support for child component, a render element\nand display controls for the component which can be overriden by sub classes.",
+            "is_constructor": 1
+        },
+        "Miogen.Component.Button": {
+            "name": "Miogen.Component.Button",
+            "shortname": "Miogen.Component.Button",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Component/Button.js",
+            "line": 3,
+            "description": "A Button UI component that can receive press events from the user.",
+            "extends": "Miogen.Component.BaseComponent",
+            "is_constructor": 1
+        },
+        "Miogen": {
+            "name": "Miogen",
+            "shortname": "Miogen",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "js/Miogen.js",
+            "line": 1,
+            "description": "Singleton miogen class to create an initialise the main application view model with\nhelper methods for error handling, asynchronous script loading and JavaScript object\nquerying.",
+            "static": 1
+        }
+    },
+    "classitems": [
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 10,
+            "description": "The jQuery DOM object that represents this component.",
+            "itemtype": "property",
+            "name": "el",
+            "type": "{jQuery object}",
+            "default": "null",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 18,
+            "description": "Array of child components that are to be built and renders as part of this component.",
+            "itemtype": "property",
+            "name": "components",
+            "type": "{Miogen.Component.BaseComponent[]}",
+            "default": "[]",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 26,
+            "description": "The element that contains the child components.  This may be teh same as the el object.",
+            "itemtype": "property",
+            "name": "containerEl",
+            "type": "{jQuery object}",
+            "default": "null",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 34,
+            "description": "The configuration object for the component attributes.",
+            "itemtype": "property",
+            "name": "config",
+            "type": "{Object}",
+            "default": "null",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 42,
+            "description": "The view model that this component is attached to.",
+            "itemtype": "property",
+            "name": "viewModel",
+            "type": "{Miogen.ViewModel.BaseViewModel}",
+            "default": "null",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 50,
+            "description": "Construct a new component.",
+            "itemtype": "method",
+            "name": "construct",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "cfg",
+                    "description": "The configuration object for this component.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "disabled",
+                            "description": "Defaults to false.  When true, the control will be disabled.",
+                            "type": "Boolean",
+                            "optional": true
+                        },
+                        {
+                            "name": "visible",
+                            "description": "Defaults to true.  Specify whether the component is visible or hidden.",
+                            "type": "Boolean",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 71,
+            "description": "Sets the view model for this component.",
+            "itemtype": "method",
+            "name": "setViewModel",
+            "params": [
+                {
+                    "name": "viewModel",
+                    "description": "The view model that this component is to be associated with.",
+                    "type": "Miogen.ViewModel.BaseViewModel"
+                }
+            ],
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 86,
+            "description": "Gets a configuration attribute for this component.",
+            "itemtype": "method",
+            "name": "getConfig",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The config key name that the value is to be retrieved for.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The config value",
+                "type": "Mixed"
+            },
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 97,
+            "description": "Builds the component HTML element with the specific properties in the constructor.",
+            "itemtype": "method",
+            "name": "build",
+            "params": [
+                {
+                    "name": "cb",
+                    "description": "Callback to call when the component has been built.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n    var button = new Miogen.Component.Button({\n        label: 'Press Me',\n        click: function () {\n            alert('Thanks');\n        }\n    });\n    \n    button.build(function () {\n        alert('Button has been built');\n    });"
+            ],
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 149,
+            "description": "Gets the component jQuery object.",
+            "itemtype": "method",
+            "name": "getEl",
+            "return": {
+                "description": "",
+                "type": "JQuery object"
+            },
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 159,
+            "description": "Adds a child component to this component.",
+            "itemtype": "method",
+            "name": "addComponent",
+            "params": [
+                {
+                    "name": "component",
+                    "description": "The component to add.",
+                    "type": "Miogen.Component.BaseComponent"
+                }
+            ],
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 183,
+            "description": "Removes all children components and calls destroy on them.",
+            "itemtype": "method",
+            "name": "removeAllComponents",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 194,
+            "description": "Destroys the component and removes it form the DOM.  This will ripple down to children components.",
+            "itemtype": "method",
+            "name": "destoy",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 205,
+            "description": "Renders the component as a child element to the supplied parent element.  All children components will in turn be rendered.",
+            "itemtype": "method",
+            "name": "renderTo",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "The parent element to render to.",
+                    "type": "JQuery object"
+                }
+            ],
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 233,
+            "description": "Disable the component and child components.",
+            "itemtype": "method",
+            "name": "disable",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 252,
+            "description": "Enable the component and child components.",
+            "itemtype": "method",
+            "name": "enable",
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 270,
+            "description": "Returns whether the component is disabled.",
+            "itemtype": "method",
+            "name": "isDisabled",
+            "return": {
+                "description": "True if disabled, false if enabled.",
+                "type": "Boolean"
+            },
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/BaseComponent.js",
+            "line": 279,
+            "description": "Fired when the value of the component has changed.",
+            "itemtype": "event",
+            "name": "onChange",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "The value of the component after the change.",
+                    "type": "Mixed"
+                }
+            ],
+            "class": "Miogen.Component.BaseComponent"
+        },
+        {
+            "file": "js/Component/Button.js",
+            "line": 14,
+            "description": "Construct a new button component.",
+            "itemtype": "method",
+            "name": "construct",
+            "params": [
+                {
+                    "name": "cfg",
+                    "description": "The configuration object for this button. See Miogen.Component.BaseComponent construct for additional options.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "label",
+                            "description": "The button label.",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "click",
+                            "description": "The click event to call when the button is clicked.",
+                            "type": "Function",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n    var button = new Miogen.Component.Button({\n        label: 'Press Me',\n        click: function () {\n            alert('Thanks');\n        }\n    });\n    \n    button.build(function () {\n        alert('Button has been built');\n    });"
+            ],
+            "class": "Miogen.Component.Button"
+        },
+        {
+            "file": "js/Component/Button.js",
+            "line": 45,
+            "description": "Builds the &lt;button&gt; HTML element with the specified properties in the constructor.",
+            "itemtype": "method",
+            "name": "build",
+            "params": [
+                {
+                    "name": "cb",
+                    "description": "Callback to call when the component has been built.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n    var button = new Miogen.Component.Button({\n        label: 'Press Me',\n        click: function () {\n            alert('Thanks');\n        }\n    });\n    \n    button.build(function () {\n        alert('Button has been built');\n    });"
+            ],
+            "class": "Miogen.Component.Button"
+        },
+        {
+            "file": "js/Component/Button.js",
+            "line": 83,
+            "description": "Sets the button label.",
+            "itemtype": "method",
+            "name": "setLabel",
+            "params": [
+                {
+                    "name": "label",
+                    "description": "The label to set the button to.",
+                    "type": "String"
+                }
+            ],
+            "class": "Miogen.Component.Button"
+        },
+        {
+            "file": "js/Data/MiogenDataField.js",
+            "line": 19,
+            "description": "Gets the relative attribute to the current field",
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Data/MiogenStore.js",
+            "line": 14,
+            "description": "Gets a Miogen collection object",
+            "params": [
+                {
+                    "name": "cfg",
+                    "description": "The config object\n     url String  The URI of hte item to get\n     success Function  The callback to call when the item has successfully been retrieved\n         (MiogenCollection|MigoenItem)\n     error Function  Called when the item cannot be retrieved\n         (MiogenModel store, XMLHttpRequest ajaxRequest, String errorText)"
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/ViewModel/PageViewModel.js",
+            "line": 184,
+            "description": "doc: MiogenDocument\nsuccess: function () {}\nerror: function (message) {}",
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Widget/ItemWidget.js",
+            "line": 15,
+            "itemtype": "property",
+            "name": "Miogen.Data.MiogenItem item\nThe miogen item that is currently being displayed within the widget",
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 11,
+            "description": "The configuration object for the application.",
+            "itemtype": "property",
+            "name": "cfg",
+            "type": "{Object}",
+            "default": "null",
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 19,
+            "description": "Keeps track of waiting requests for the various modules.",
+            "itemtype": "property",
+            "name": "defineCallbacks",
+            "type": "{Function[]}",
+            "default": "[]",
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 27,
+            "description": "The active view model for the application.",
+            "itemtype": "property",
+            "name": "viewModel",
+            "type": "{Miogen.ViewModel.BaseViewModel}",
+            "default": "null",
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 36,
+            "description": "Construct a new Miogen instance.",
+            "itemtype": "method",
+            "name": "construct",
+            "is_constructor": 1,
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 46,
+            "description": "Called on the initialisation of the Miogen class and is responsible for loading\nthe view definition fle from the server and initialising the page view model.",
+            "itemtype": "method",
+            "name": "init",
+            "params": [
+                {
+                    "name": "cb",
+                    "description": "A callback function to be called when the iniailise has completed.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n    Miogen.init(function () {\n        Miogen.renderTo($('#view-body'));\n        Miogen.run();\n    });"
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 95,
+            "description": "Standardised method to record application errors with the option to notify the user.",
+            "itemtype": "method",
+            "name": "logError",
+            "params": [
+                {
+                    "name": "message",
+                    "description": "The error message.",
+                    "type": "String|Exception"
+                },
+                {
+                    "name": "notifyUser",
+                    "description": "Optional default false. When true, the user will be notified of the\n                            error.",
+                    "type": "Boolean"
+                }
+            ],
+            "example": [
+                "\n    Miogen.logError('Unable to create account as the password is too short', true);",
+                "\n    try {\n        doSomething();\n    }\n    catch (ex) {\n        Miogen.logError(ex);\n    }"
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 125,
+            "description": "Runs the Miogen application by calling the view model to initialise all it's data.",
+            "itemtype": "method",
+            "name": "run",
+            "example": [
+                "\n    Miogen.init(function () {\n        Miogen.renderTo($('#view-body'));\n        Miogen.run();\n    });"
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 139,
+            "description": "Gets or sets a configuration object.",
+            "itemtype": "method",
+            "name": "config",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The configuration key name to get or set",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If set, the value will be set against the key.  If omited the key's currentl\n                     value will be returned.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The key's value after any modifications.",
+                "type": "Mixed"
+            },
+            "example": [
+                "\n    var apiUrl = Miogen.config('apiUrl');\n    \n    Miogen.config('lastLoginTime', new Date());"
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 163,
+            "description": "Call the collection of components to render to the supplied dom element.",
+            "itemtype": "method",
+            "name": "renderTo",
+            "params": [
+                {
+                    "name": "el",
+                    "description": "The jQuery object to render the view to.",
+                    "type": "JQuery object"
+                }
+            ],
+            "example": [
+                "\n    Miogen.init(function () {\n        Miogen.renderTo($('#view-body'));\n        Miogen.run();\n    });"
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 184,
+            "description": "Replaces the application configuration object with a new one.",
+            "itemtype": "method",
+            "name": "setConfig",
+            "params": [
+                {
+                    "name": "cfg",
+                    "description": "The configuration object to replace it with.",
+                    "type": "Object"
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 193,
+            "description": "Load a remote JavaScript file and be notified when it has successfully been loaded.",
+            "itemtype": "method",
+            "name": "loadScript",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "The URL of the script to load.",
+                    "type": "String"
+                },
+                {
+                    "name": "cb",
+                    "description": "A callback to be notified when the script has loaded.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 223,
+            "description": "Define a new class within the Miogen application.",
+            "itemtype": "method",
+            "name": "define",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The fully qualified name of the class being defined.",
+                    "type": "String"
+                },
+                {
+                    "name": "classDef",
+                    "description": "The class definition of which new instances of this class can be created by.",
+                    "type": "Class"
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 256,
+            "description": "Loads the supplied classes if not loaded and calls the callback when they are available for use.",
+            "itemtype": "method",
+            "name": "require",
+            "params": [
+                {
+                    "name": "names",
+                    "description": "Array of fully qualified class names to ensure are loaded.",
+                    "type": "String[]"
+                },
+                {
+                    "name": "cb",
+                    "description": "The callback to call when the classes are ready for use.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 283,
+            "description": "Ensures that a specific modules has been loaded and calls the callback when it's ready for use.",
+            "itemtype": "method",
+            "name": "requireModule",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "The fully qualified name of the class that is required.",
+                    "type": "String"
+                },
+                {
+                    "name": "cb",
+                    "description": "The callback to call when the class is ready for use.",
+                    "type": "Function"
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 327,
+            "description": "Shallow merge of a JavaScript object by overlaying one onto the other.",
+            "itemtype": "method",
+            "name": "mixIn",
+            "params": [
+                {
+                    "name": "target",
+                    "description": "The master object that will be updated with the overlay.",
+                    "type": "Object"
+                },
+                {
+                    "name": "overlay",
+                    "description": "The object whose properties will be overlaid onto the master object.  If omitted, no action will be taken.",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 343,
+            "description": "Bind to an object's function and have a callback called when it has completed executing.",
+            "itemtype": "method",
+            "name": "bind",
+            "params": [
+                {
+                    "name": "who",
+                    "description": "The owner of this bind which can later be used to unbind.",
+                    "type": "Object"
+                },
+                {
+                    "name": "obj",
+                    "description": "The target object which is being bound to.",
+                    "type": "Object"
+                },
+                {
+                    "name": "method",
+                    "description": "The name of the method that will be bound to.",
+                    "type": "String"
+                },
+                {
+                    "name": "cb",
+                    "description": "The callback method to call when the binded method has been executed.  The arguments\n                     of this callback will be the same of the method being bound.",
+                    "type": "Function"
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 386,
+            "description": "Unbind to an object's method.",
+            "itemtype": "method",
+            "name": "unbind",
+            "params": [
+                {
+                    "name": "who",
+                    "description": "The owner of the original bind.",
+                    "type": "Object"
+                },
+                {
+                    "name": "obj",
+                    "description": "The object that is being unbound.",
+                    "type": "Object"
+                },
+                {
+                    "name": "methtod",
+                    "description": "The method that is to be unbound.",
+                    "type": "String"
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 408,
+            "description": "Gets the currently active view model.",
+            "itemtype": "method",
+            "name": "getViewModel",
+            "return": {
+                "description": "",
+                "type": "Miogen.ViewModel.BaseViewModel"
+            },
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 417,
+            "description": "Set the value of a JavaScript object identified by the query.",
+            "itemtype": "method",
+            "name": "setObjectValue",
+            "params": [
+                {
+                    "name": "objectContext",
+                    "description": "The object that is to be modified.",
+                    "type": "Object"
+                },
+                {
+                    "name": "query",
+                    "description": "The string query that is to identify the value to be modified.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "The value that is to be set.",
+                    "type": "Mixed"
+                }
+            ],
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 476,
+            "description": "Gets an object value denoted by a given query.",
+            "itemtype": "method",
+            "name": "queryObject",
+            "params": [
+                {
+                    "name": "objectContext",
+                    "description": "The object that is to be queried.",
+                    "type": "Object"
+                },
+                {
+                    "name": "query",
+                    "description": "The string query to identify teh value to return.",
+                    "type": "String"
+                },
+                {
+                    "name": "defaultValue",
+                    "description": "The default value to return if the query cannot find a value. Default's to null.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The value denoted by the query or the default value if not found.",
+                "type": "Mixed"
+            },
+            "class": "Miogen"
+        }
+    ]
+}

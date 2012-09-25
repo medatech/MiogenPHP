@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>js&#x2F;Widget&#x2F;ItemWidget.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Miogen.html">Miogen</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.BaseComponent.html">Miogen.Component.BaseComponent</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.Button.html">Miogen.Component.Button</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: js&#x2F;Widget&#x2F;ItemWidget.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+Miogen.require([&#x27;Widget.BaseWidget&#x27;,
+                &#x27;Component.Toolbar&#x27;,
+                &#x27;Component.Button&#x27;,
+                &#x27;Component.DataForm&#x27;,
+                &#x27;Component.DataField&#x27;,
+                &#x27;Component.Label&#x27;], function () {
+    
+    Miogen.define(&#x27;Widget.ItemWidget&#x27;, Miogen.Widget.BaseWidget.extend({
+        
+        toolbarItems: null,
+        toolbar: null,
+        dataForm: null,
+        doc: null,
+        
+        &#x2F;**
+         * @property Miogen.Data.MiogenItem item
+         * The miogen item that is currently being displayed within the widget
+         *&#x2F;
+        item: null,
+        
+        construct: function (cfg) {
+            var t = this;
+            
+            this._super(cfg);
+            
+            this.toolbarItems = {
+                save: new Miogen.Component.Button({
+                    label: &#x27;Save&#x27;,
+                    disabled: true,
+                    click: function () {
+                        t.saveItem();
+                    }
+                }),
+                refresh: new Miogen.Component.Button({
+                    label: &#x27;Revert&#x27;,
+                    disabled: true,
+                    click: function () {
+                        t.item.rollback();
+                    }
+                }),
+                saveLabel: new Miogen.Component.Label({
+                    text: &#x27;Saved successfully&#x27;,
+                    className: &#x27;green-label&#x27;,
+                    visible: false
+                })
+            };
+            
+            this.toolbar = new Miogen.Component.Toolbar();
+            this.dataForm = new Miogen.Component.DataForm();
+            
+            this.toolbar.addComponent(this.toolbarItems.save);
+            this.toolbar.addComponent(this.toolbarItems.refresh);
+            this.toolbar.addComponent(this.toolbarItems.saveLabel);
+            
+            Miogen.bind(t, this.dataForm, &#x27;onFieldChange&#x27;, function (field, value) {
+                t.onFieldChange(field, value);
+            });
+            
+            this.addComponent(this.toolbar);
+            this.addComponent(this.dataForm);
+            
+        },
+        
+        onFieldChange: function (field, value) {
+            this.toolbar.enable();
+        },
+        
+        build: function (cb) {
+            var t = this;
+            &#x2F;&#x2F; Render the base widget
+            this._super(function () {
+                &#x2F;&#x2F; Register this widget with the view model
+                Miogen.getViewModel().registerWidget(t);
+                cb.call(t);
+            });
+        },
+        
+        onCollectionLoad: function (collection) {
+            
+        },
+        
+        initData: function () {
+            var t = this;
+            
+            if (this.config.hasOwnProperty(&#x27;bind&#x27;)) {
+                if (this.config.bind.hasOwnProperty(&#x27;selectedItems&#x27;)) {
+                    &#x2F;&#x2F; Bind to watch what items are selected
+                    Miogen.bind(this, Miogen.getViewModel(), &#x27;set&#x27;, function (key, value) {
+                        if ($.inArray(key, t.config.bind.selectedItems) !== -1) {
+                            t.onItemLoad(value);
+                        }
+                    });
+                }
+            }
+        },
+        
+        onItemLoad: function (uri) {
+            var t = this;
+            
+            this.toolbar.disable();
+            
+            Miogen.getViewModel().get({
+                url: uri,
+                success: function (doc) {
+                    var fields;
+                    &#x2F;&#x2F;var el = $(&#x27;&lt;table&gt;&lt;&#x2F;table&gt;&#x27;);
+                    
+                    t.displayItem(doc, function () {});
+                },
+                error: function () {
+                    &#x2F;&#x2F;console.log(&#x27;Error&#x27;, arguments);
+                }
+            });
+        },
+        
+        displayItem: function (doc, cb) {
+            var t = this, fields, item;
+            
+            this.dataForm.removeFields();
+            
+            &#x2F;&#x2F; Unbind to the previous item first
+            if (this.item !== null) {
+                Miogen.unbind(this, this.item, &#x27;setDirtyFlag&#x27;);
+            }
+            
+            this.doc = doc;
+            this.item = doc.getItem(0); &#x2F;&#x2F; Get the first item, which is the one to display
+            if (this.item !== null) {
+                &#x2F;&#x2F; Set the widget title
+                t.setTitle(doc.getPrompt() + &#x27; &#x27; + this.item.get(&#x27;name.value&#x27;));
+                
+                &#x2F;&#x2F; Bind to the new item
+                Miogen.bind(this, this.item, &#x27;setDirtyFlag&#x27;, function (isDirty) {
+                    t.setItemDirty(isDirty);
+                });
+                
+                &#x2F;&#x2F; Watch for the name cahnge to set the title
+                Miogen.bind(this, this.item, &#x27;onValueChange&#x27;, function (attribute, value) {
+                    if (attribute === &#x27;name.value&#x27;) {
+                        t.setTitle(doc.getPrompt() + &#x27; &#x27; + value);
+                    }
+                });
+                
+                &#x2F;&#x2F; Set whether this is dirty to start with
+                this.setItemDirty(this.item.isDirty());
+                
+                fields = doc.getTemplate().getDataFields();
+                $(fields).each(function (index, fieldTemplate) {
+                    var field, dataField = null;
+                    
+                    dataField = t.item.getField(fieldTemplate.getID());
+                    
+                    field = new Miogen.Component.DataField({
+                        id: fieldTemplate.getID(),
+                        template: fieldTemplate,
+                        data: dataField
+                    });
+                    t.dataForm.addField(field);
+                });
+                
+                t.dataForm.renderFields();
+            }
+        },
+        
+        setItemDirty: function (isDirty) {
+            if (isDirty) {
+                this.toolbarItems.save.enable();
+                this.toolbarItems.refresh.enable();
+            }
+            else {
+                this.toolbarItems.save.disable();
+                this.toolbarItems.refresh.disable();
+            }
+        },
+        
+        destroy: function () {
+            if (this.item !== null) {
+                Miogen.unbind(this, this.item, &#x27;setDirtyFlag&#x27;);
+                Miogen.bind(this, this.item, &#x27;onValueChange&#x27;);
+            }
+            
+            Miogen.unbind(this, Miogen.getViewModel(), &#x27;set&#x27;);
+            Miogen.unbind(this, this.dataForm, &#x27;onFieldChange&#x27;);
+            this._super();
+        },
+        
+        saveItem: function () {
+            var t = this;
+            
+            if (this.doc !== null) {
+                this.toolbarItems.save.setLabel(&#x27;Saving...&#x27;);
+                this.toolbarItems.save.disable();
+                this.toolbarItems.refresh.disable();
+                
+                Miogen.getViewModel().put({
+                    doc: this.doc,
+                    success: function () {
+                        t.toolbarItems.save.setLabel(&#x27;Save&#x27;);
+                        
+                        t.toolbarItems.saveLabel.show();
+                        setTimeout(function () {
+                            t.toolbarItems.saveLabel.hide();
+                        }, 3000);
+                    },
+                    error: function () {
+                        &#x2F;&#x2F;console.log(&#x27;Save error&#x27;);
+                        t.toolbarItems.save.setLabel(&#x27;Save&#x27;);
+                        t.toolbarItems.save.enable();
+                        t.toolbarItems.refresh.enable();
+                    }
+                });
+            }
+        }
+    }));
+    
+});
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

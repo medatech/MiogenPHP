@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>js&#x2F;Data&#x2F;MiogenStore.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/Miogen.html">Miogen</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.BaseComponent.html">Miogen.Component.BaseComponent</a></li>
+            
+                <li><a href="..&#x2F;classes/Miogen.Component.Button.html">Miogen.Component.Button</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: js&#x2F;Data&#x2F;MiogenStore.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+Miogen.require([&#x27;Data.MiogenModel&#x27;, &#x27;Data.MiogenDocument&#x27;], function () {
+    Miogen.define(&#x27;Data.MiogenStore&#x27;, Class.extend({
+
+        cfg: null,
+        pendingGets: null,
+        model: null,
+        
+        construct: function (cfg) {
+            this.cfg = cfg;
+            this.pendingGets = {};
+            this.model = new Miogen.Data.MiogenModel();
+        },
+
+        &#x2F;**
+         * Gets a Miogen collection object
+         * @param cfg The config object
+         *      url String  The URI of hte item to get
+         *      success Function  The callback to call when the item has successfully been retrieved
+         *          (MiogenCollection|MigoenItem)
+         *      error Function  Called when the item cannot be retrieved
+         *          (MiogenModel store, XMLHttpRequest ajaxRequest, String errorText)
+         *      
+         *&#x2F;
+        get: function (cfg) {
+            var t = this, item;
+            
+            &#x2F;&#x2F; Get it from the cache if available
+            item = this.model.get(cfg.url);
+            if (item === null) {
+                &#x2F;&#x2F; Load it from the server
+                
+                &#x2F;&#x2F; See if we are currently waiting for this item
+                if (this.pendingGets.hasOwnProperty(cfg.url)) {
+                    &#x2F;&#x2F; It&#x27;s already pending, so add this to the list of notifications
+                    this.pendingGets[cfg.url].push(cfg);
+                }
+                else {
+                    &#x2F;&#x2F; Create this as a pending get
+                    this.pendingGets[cfg.url] = [cfg];
+                    
+                    $.ajax({
+                        url: cfg.url,
+                        headers: {
+                            &#x27;Accept&#x27;: &#x27;vnd.miogen+JSON&#x27;
+                        },
+                        contentType: &#x27;text&#x2F;json&#x27;,
+                        success: function (data) {
+                            var item = t.model.set(data);
+                            item._doc = new Miogen.Data.MiogenDocument(item);
+                            
+                            &#x2F;&#x2F; Call all the pending notifications
+                            $.each(t.pendingGets[cfg.url], function (index, notifyCfg) {
+                                &#x2F;&#x2F; Notify on the next tick so we can delete the pending request safely
+                                setTimeout(function () {
+                                    notifyCfg.success.call(t, item._doc);
+                                }, 0);
+                            });
+                            &#x2F;&#x2F; Clear the item in the pending list
+                            delete (t.pendingGets[cfg.url]);
+                        },
+                        error: function (xhr, text, error) {
+                            &#x2F;&#x2F; Call all the pending notifications
+                            $.each(t.pendingGets[cfg.url], function (index, notifyCfg) {
+                                &#x2F;&#x2F; Notify on the next tick so we can delete the pending request safely
+                                setTimeout(function () {
+                                    notifyCfg.error.call(t, xhr, text, error);
+                                }, 0);
+                            });
+                            &#x2F;&#x2F; Clear the item in the pending list
+                            delete (t.pendingGets[cfg.url]);
+                        }
+                    });
+                } &#x2F;&#x2F; End of if already requested and waiting for a response
+            } &#x2F;&#x2F; End of loading from the server
+            else {
+                if (!item.hasOwnProperty(&#x27;_doc&#x27;)) {
+                    item._doc = new Miogen.Data.MiogenDocument(item);
+                }
+                &#x2F;&#x2F; Got it, just return it
+                cfg.success(item._doc);
+            }
+        },
+        
+        put: function (cfg) {
+            
+            &#x2F;&#x2F; NOTE: Only supports items, not collection of items
+            
+            var saveData = {
+                data: cfg.doc.getItem(0).exportDelta()
+            };
+            
+            $.ajax({
+                url: cfg.doc.getUri(),
+                headers: {
+                    &#x27;Accept&#x27;: &#x27;vnd.miogen+JSON&#x27;
+                },
+                contentType: &#x27;text&#x2F;json&#x27;,
+                type: &#x27;PUT&#x27;,
+                processData: false,
+                data: JSON.stringify(saveData),
+                success: function (data) {
+                    cfg.doc.commit();
+                    cfg.success(cfg.doc);
+&#x2F;&#x2F;                    var item = t.model.set(data);
+&#x2F;&#x2F;                    item._doc = new Miogen.Data.MiogenDocument(item);
+&#x2F;&#x2F;
+&#x2F;&#x2F;                    &#x2F;&#x2F; Call all the pending notifications
+&#x2F;&#x2F;                    $.each(t.pendingGets[cfg.url], function (index, notifyCfg) {
+&#x2F;&#x2F;                        &#x2F;&#x2F; Notify on the next tick so we can delete the pending request safely
+&#x2F;&#x2F;                        setTimeout(function () {
+&#x2F;&#x2F;                            notifyCfg.success.call(t, item._doc);
+&#x2F;&#x2F;                        }, 0);
+&#x2F;&#x2F;                    });
+&#x2F;&#x2F;                    &#x2F;&#x2F; Clear the item in the pending list
+&#x2F;&#x2F;                    delete (t.pendingGets[cfg.url]);
+                },
+                error: function (xhr, text, error) {
+                    cfg.error(text, error);
+                }
+            });
+            
+        }
+
+    }));
+});
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>
