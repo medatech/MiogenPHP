@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Miogen.Component.ComboBox</title>
+    <title>Miogen.Component.Dropdown</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -49,7 +49,7 @@
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Checkbox.html">Miogen.Component.Checkbox</a></li>
             
-                <li><a href="..&#x2F;classes/Miogen.Component.ComboBox.html">Miogen.Component.ComboBox</a></li>
+                <li><a href="..&#x2F;classes/Miogen.Component.Dropdown.html">Miogen.Component.Dropdown</a></li>
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Label.html">Miogen.Component.Label</a></li>
             
@@ -96,7 +96,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>Miogen.Component.ComboBox Class</h1>
+                        <h1>Miogen.Component.Dropdown Class</h1>
 <div class="box meta">
     
 
@@ -108,7 +108,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="..&#x2F;files&#x2F;js_Component_ComboBox.js.html#l3"><code>js&#x2F;Component&#x2F;ComboBox.js:3</code></a>
+            Defined in: <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l3"><code>js&#x2F;Component&#x2F;Dropdown.js:3</code></a>
         </div>
     
 
@@ -120,14 +120,14 @@
 
 
 <div class="box intro">
-    <p>A Combo Box UI component.</p>
+    <p>A Dropdown UI component.</p>
 </div>
 
 
     <div class="constructor">
         <h2>Constructor</h2>
-        <div id="method_Miogen.Component.ComboBox" class="method item">
-    <h3 class="name"><code>Miogen.Component.ComboBox</code></h3>
+        <div id="method_Miogen.Component.Dropdown" class="method item">
+    <h3 class="name"><code>Miogen.Component.Dropdown</code></h3>
 
     
         <span class="paren">()</span>
@@ -158,7 +158,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;js_Component_ComboBox.js.html#l3"><code>js&#x2F;Component&#x2F;ComboBox.js:3</code></a>
+        <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l3"><code>js&#x2F;Component&#x2F;Dropdown.js:3</code></a>
         
         </p>
 
@@ -215,6 +215,13 @@
                                 
                             </li>
                         
+                            <li class="index-item method">
+                                <a href="#method_addOption">addOption</a>
+
+                                
+                                
+                            </li>
+                        
                             <li class="index-item method inherited">
                                 <a href="#method_attr">attr</a>
 
@@ -259,6 +266,13 @@
                         
                             <li class="index-item method inherited">
                                 <a href="#method_removeAllComponents">removeAllComponents</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method private">
+                                <a href="#method_renderOption">renderOption</a>
 
                                 
                                 
@@ -311,6 +325,13 @@
                         
                             <li class="index-item property inherited">
                                 <a href="#property_el">el</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item property private">
+                                <a href="#property_options">options</a>
 
                                 
                                 
@@ -436,6 +457,114 @@
 </div>
 
                 
+                    <div id="method_addOption" class="method item">
+    <h3 class="name"><code>addOption</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>value</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>label</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l102"><code>js&#x2F;Component&#x2F;Dropdown.js:102</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Adds a new option to the end of the dropdown.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">value</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>A string representation of the value.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">label</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The option label to display in the dropdown.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+                
                     <div id="method_attr" class="method item">
     <h3 class="name"><code>attr</code></h3>
 
@@ -488,7 +617,7 @@
             
         
         
-        <a href="..&#x2F;files&#x2F;js_Component_ComboBox.js.html#l88"><code>js&#x2F;Component&#x2F;ComboBox.js:88</code></a>
+        <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l144"><code>js&#x2F;Component&#x2F;Dropdown.js:144</code></a>
         
         </p>
 
@@ -562,7 +691,7 @@
 </div>
 
                 
-                    <div id="method_build" class="method item inherited">
+                    <div id="method_build" class="method item">
     <h3 class="name"><code>build</code></h3>
 
     
@@ -595,13 +724,16 @@
 
     <div class="meta">
         
+            <p>Inherited from
+            <a href="..&#x2F;classes&#x2F;Miogen.Component.BaseComponent.html#method_build">
+                Miogen.Component.BaseComponent
+            </a>
             
-                <p>Inherited from
-                <a href="..&#x2F;classes&#x2F;Miogen.Component.BaseComponent.html#method_build">Miogen.Component.BaseComponent</a>:
+            but overwritten in
             
         
         
-        <a href="..&#x2F;files&#x2F;js_Component_BaseComponent.js.html#l97"><code>js&#x2F;Component&#x2F;BaseComponent.js:97</code></a>
+        <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l55"><code>js&#x2F;Component&#x2F;Dropdown.js:55</code></a>
         
         </p>
 
@@ -612,7 +744,7 @@
     </div>
 
     <div class="description">
-        <p>Builds the component HTML element with the specific properties in the constructor.</p>
+        <p>Builds the &lt;select&gt; HTML element with the specified properties in the constructor.</p>
     </div>
 
     
@@ -648,15 +780,18 @@
             <h4>Example:</h4>
 
             <div class="example-content">
-                <pre class="code"><code class="prettyprint">var button = new Miogen.Component.Button({
-    label: 'Press Me',
-    click: function () {
-        alert('Thanks');
-    }
+                <pre class="code"><code class="prettyprint">var dropdown = new Miogen.Component.Dropdown({
+    value: '18-25',
+    options: [
+        {value: '&lt;18', label: 'Under 18'},
+        {value: '18-25', label: '18 to 25'},
+        {value: '26-40', label: '26 to 40'},
+        {value: '&gt;40', label: 'Over 40'}
+    ]
 });
 
-button.build(function () {
-    alert('Button has been built');
+dropdown.build(function () {
+    alert('Dropdown has been built');
 });
 </code></pre>
             </div>
@@ -665,7 +800,7 @@ button.build(function () {
 </div>
 
                 
-                    <div id="method_construct" class="method item inherited">
+                    <div id="method_construct" class="method item">
     <h3 class="name"><code>construct</code></h3>
 
     
@@ -698,13 +833,16 @@ button.build(function () {
 
     <div class="meta">
         
+            <p>Inherited from
+            <a href="..&#x2F;classes&#x2F;Miogen.Component.BaseComponent.html#method_construct">
+                Miogen.Component.BaseComponent
+            </a>
             
-                <p>Inherited from
-                <a href="..&#x2F;classes&#x2F;Miogen.Component.BaseComponent.html#method_construct">Miogen.Component.BaseComponent</a>:
+            but overwritten in
             
         
         
-        <a href="..&#x2F;files&#x2F;js_Component_BaseComponent.js.html#l50"><code>js&#x2F;Component&#x2F;BaseComponent.js:50</code></a>
+        <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l23"><code>js&#x2F;Component&#x2F;Dropdown.js:23</code></a>
         
         </p>
 
@@ -715,7 +853,7 @@ button.build(function () {
     </div>
 
     <div class="description">
-        <p>Construct a new component.</p>
+        <p>Construct a new dropdown component.</p>
     </div>
 
     
@@ -734,7 +872,7 @@ button.build(function () {
                     
 
                     <div class="param-description">
-                        <p>The configuration object for this component.</p>
+                        <p>The configuration object for this dropdown. See Miogen.Component.BaseComponent construct for additional options.</p>
                     </div>
 
                     
@@ -742,13 +880,13 @@ button.build(function () {
                             
                             <li class="param">
                                 
-                                    <code class="param-name optional">[disabled]</code>
-                                    <span class="type">Boolean</span>
+                                    <code class="param-name optional">[value]</code>
+                                    <span class="type">String</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
                                 
 
                                 <div class="param-description">
-                                    <p>Defaults to false.  When true, the control will be disabled.</p>
+                                    <p>The value to be set on the dropdown when all the options have been added.</p>
                                 </div>
 
                                 
@@ -756,13 +894,13 @@ button.build(function () {
                             
                             <li class="param">
                                 
-                                    <code class="param-name optional">[visible]</code>
-                                    <span class="type">Boolean</span>
+                                    <code class="param-name optional">[options]</code>
+                                    <span class="type">Object</span>
                                     <span class="flag optional" title="This parameter is optional.">optional</span>
                                 
 
                                 <div class="param-description">
-                                    <p>Defaults to true.  Specify whether the component is visible or hidden.</p>
+                                    <p>The list of options to render. Defaults to empty list.</p>
                                 </div>
 
                                 
@@ -778,6 +916,23 @@ button.build(function () {
 
     
 
+    
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+                <pre class="code"><code class="prettyprint">var dropdown = new Miogen.Component.Dropdown({
+    value: '18-25',
+    options: [
+        {value: '&lt;18', label: 'Under 18'},
+        {value: '18-25', label: '18 to 25'},
+        {value: '26-40', label: '26 to 40'},
+        {value: '&gt;40', label: 'Over 40'}
+    ]
+});
+</code></pre>
+            </div>
+        </div>
     
 </div>
 
@@ -1044,6 +1199,116 @@ button.build(function () {
         <p>Removes all children components and calls destroy on them.</p>
     </div>
 
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_renderOption" class="method item private">
+    <h3 class="name"><code>renderOption</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>value</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>label</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l124"><code>js&#x2F;Component&#x2F;Dropdown.js:124</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Renders an individual option to the end of the dropdown.</p>
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">value</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>A string representation of the value.</p>
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">label</code>
+                        <span class="type">String</span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The option label to display in the dropdown.</p>
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
     
 
     
@@ -1392,6 +1657,54 @@ button.build(function () {
 
     
         <p><strong>Default:</strong> null</p>
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="property_options" class="property item private">
+    <h3 class="name"><code>options</code></h3>
+    <span class="type">Object</span>
+
+    
+
+    
+        <span class="flag private">private</span>
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="..&#x2F;files&#x2F;js_Component_Dropdown.js.html#l14"><code>js&#x2F;Component&#x2F;Dropdown.js:14</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>The stored options for the dropdown.</p>
+    </div>
+
+    
+        <p><strong>Default:</strong> []</p>
     
 
     

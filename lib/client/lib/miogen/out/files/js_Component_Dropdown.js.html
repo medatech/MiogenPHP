@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>js&#x2F;Component&#x2F;ComboBox.js</title>
+    <title>js&#x2F;Component&#x2F;Dropdown.js</title>
     <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
@@ -49,7 +49,7 @@
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Checkbox.html">Miogen.Component.Checkbox</a></li>
             
-                <li><a href="..&#x2F;classes/Miogen.Component.ComboBox.html">Miogen.Component.ComboBox</a></li>
+                <li><a href="..&#x2F;classes/Miogen.Component.Dropdown.html">Miogen.Component.Dropdown</a></li>
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Label.html">Miogen.Component.Label</a></li>
             
@@ -96,30 +96,54 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: js&#x2F;Component&#x2F;ComboBox.js</h1>
+                        <h1 class="file-heading">File: js&#x2F;Component&#x2F;Dropdown.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 &#x2F;*globals Miogen,$ *&#x2F;
 
 &#x2F;**
- * A Combo Box UI component.
+ * A Dropdown UI component.
  * 
- * @class Miogen.Component.ComboBox
+ * @class Miogen.Component.Dropdown
  * @extends Miogen.Component.BaseComponent
  * @constructor
  *&#x2F;
 Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
     
-    Miogen.define(&#x27;Component.ComboBox&#x27;, Miogen.Component.BaseComponent.extend({
+    Miogen.define(&#x27;Component.Dropdown&#x27;, Miogen.Component.BaseComponent.extend({
         
+       &#x2F;**
+        * The stored options for the dropdown.
+        * @property options
+        * @private
+        * @type {Object[]}
+        * @default []
+        **&#x2F;
         options: null,
         
+        &#x2F;**
+         * Construct a new dropdown component.
+         * 
+         * @method construct
+         * @param {Object} [cfg] The configuration object for this dropdown. See Miogen.Component.BaseComponent construct for additional options.
+         *     @param {String} [cfg.value] The value to be set on the dropdown when all the options have been added.
+         *     @param {Object[]} [cfg.options] The list of options to render. Defaults to empty list.
+         * 
+         * @example
+         *     var dropdown = new Miogen.Component.Dropdown({
+         *         value: &#x27;18-25&#x27;,
+         *         options: [
+         *             {value: &#x27;&lt;18&#x27;, label: &#x27;Under 18&#x27;},
+         *             {value: &#x27;18-25&#x27;, label: &#x27;18 to 25&#x27;},
+         *             {value: &#x27;26-40&#x27;, label: &#x27;26 to 40&#x27;},
+         *             {value: &#x27;&gt;40&#x27;, label: &#x27;Over 40&#x27;}
+         *         ]
+         *     });
+         *&#x2F;
         construct: function (cfg) {
             var config = {
-                query: null,
                 value: &#x27;&#x27;,
-                disabled: false,
                 options: []
             }
             
@@ -130,6 +154,27 @@ Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
             this._super(config);
         },
         
+        &#x2F;**
+         * Builds the &amp;lt;select&amp;gt; HTML element with the specified properties in the constructor.
+         * 
+         * @method build
+         * @param {Function} [cb] Callback to call when the component has been built.
+         * 
+         * @example
+         *     var dropdown = new Miogen.Component.Dropdown({
+         *         value: &#x27;18-25&#x27;,
+         *         options: [
+         *             {value: &#x27;&lt;18&#x27;, label: &#x27;Under 18&#x27;},
+         *             {value: &#x27;18-25&#x27;, label: &#x27;18 to 25&#x27;},
+         *             {value: &#x27;26-40&#x27;, label: &#x27;26 to 40&#x27;},
+         *             {value: &#x27;&gt;40&#x27;, label: &#x27;Over 40&#x27;}
+         *         ]
+         *     });
+         *     
+         *     dropdown.build(function () {
+         *         alert(&#x27;Dropdown has been built&#x27;);
+         *     });
+         *&#x2F;
         build: function (cb) {
             var t = this;
             
@@ -156,6 +201,13 @@ Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
             cb.call(this);
         },
         
+        &#x2F;**
+         * Adds a new option to the end of the dropdown.
+         * 
+         * @method addOption
+         * @param {String} value A string representation of the value.
+         * @param {String} label The option label to display in the dropdown.
+         *&#x2F;
         addOption: function (value, label) {
             var optionData;
             
@@ -171,6 +223,14 @@ Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
             }
         },
         
+        &#x2F;**
+         * Renders an individual option to the end of the dropdown.
+         * 
+         * @method renderOption
+         * @private
+         * @param {String} value A string representation of the value.
+         * @param {String} label The option label to display in the dropdown.
+         *&#x2F;
         renderOption: function (optionData) {
             var option = $(&#x27;&lt;option&gt;&lt;&#x2F;option&gt;&#x27;);
             option.text(optionData.label);
@@ -181,10 +241,6 @@ Miogen.require([&#x27;Component.BaseComponent&#x27;], function () {
             if (this.config.value === optionData.value) {
                 this.attr(&#x27;value&#x27;, optionData.value);
             }
-        },
-        
-        onChange: function (value) {
-            
         },
         
         &#x2F;**

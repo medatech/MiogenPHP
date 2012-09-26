@@ -28,11 +28,11 @@
             "fors": {},
             "namespaces": {}
         },
-        "js/Component/ComboBox.js": {
-            "name": "js/Component/ComboBox.js",
+        "js/Component/Dropdown.js": {
+            "name": "js/Component/Dropdown.js",
             "modules": {},
             "classes": {
-                "Miogen.Component.ComboBox": 1
+                "Miogen.Component.Dropdown": 1
             },
             "fors": {},
             "namespaces": {}
@@ -138,17 +138,17 @@
             "extends": "Miogen.Component.BaseComponent",
             "is_constructor": 1
         },
-        "Miogen.Component.ComboBox": {
-            "name": "Miogen.Component.ComboBox",
-            "shortname": "Miogen.Component.ComboBox",
+        "Miogen.Component.Dropdown": {
+            "name": "Miogen.Component.Dropdown",
+            "shortname": "Miogen.Component.Dropdown",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "js/Component/ComboBox.js",
+            "file": "js/Component/Dropdown.js",
             "line": 3,
-            "description": "A Combo Box UI component.",
+            "description": "A Dropdown UI component.",
             "extends": "Miogen.Component.BaseComponent",
             "is_constructor": 1
         },
@@ -596,8 +596,114 @@
             "class": "Miogen.Component.Checkbox"
         },
         {
-            "file": "js/Component/ComboBox.js",
-            "line": 88,
+            "file": "js/Component/Dropdown.js",
+            "line": 14,
+            "description": "The stored options for the dropdown.",
+            "itemtype": "property",
+            "name": "options",
+            "access": "private",
+            "tagname": "",
+            "type": "{Object[]}",
+            "default": "[]",
+            "class": "Miogen.Component.Dropdown"
+        },
+        {
+            "file": "js/Component/Dropdown.js",
+            "line": 23,
+            "description": "Construct a new dropdown component.",
+            "itemtype": "method",
+            "name": "construct",
+            "params": [
+                {
+                    "name": "cfg",
+                    "description": "The configuration object for this dropdown. See Miogen.Component.BaseComponent construct for additional options.",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "value",
+                            "description": "The value to be set on the dropdown when all the options have been added.",
+                            "type": "String",
+                            "optional": true
+                        },
+                        {
+                            "name": "options",
+                            "description": "The list of options to render. Defaults to empty list.",
+                            "type": "Object[]",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "example": [
+                "\n    var dropdown = new Miogen.Component.Dropdown({\n        value: '18-25',\n        options: [\n            {value: '<18', label: 'Under 18'},\n            {value: '18-25', label: '18 to 25'},\n            {value: '26-40', label: '26 to 40'},\n            {value: '>40', label: 'Over 40'}\n        ]\n    });"
+            ],
+            "class": "Miogen.Component.Dropdown"
+        },
+        {
+            "file": "js/Component/Dropdown.js",
+            "line": 55,
+            "description": "Builds the &lt;select&gt; HTML element with the specified properties in the constructor.",
+            "itemtype": "method",
+            "name": "build",
+            "params": [
+                {
+                    "name": "cb",
+                    "description": "Callback to call when the component has been built.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n    var dropdown = new Miogen.Component.Dropdown({\n        value: '18-25',\n        options: [\n            {value: '<18', label: 'Under 18'},\n            {value: '18-25', label: '18 to 25'},\n            {value: '26-40', label: '26 to 40'},\n            {value: '>40', label: 'Over 40'}\n        ]\n    });\n    \n    dropdown.build(function () {\n        alert('Dropdown has been built');\n    });"
+            ],
+            "class": "Miogen.Component.Dropdown"
+        },
+        {
+            "file": "js/Component/Dropdown.js",
+            "line": 102,
+            "description": "Adds a new option to the end of the dropdown.",
+            "itemtype": "method",
+            "name": "addOption",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "A string representation of the value.",
+                    "type": "String"
+                },
+                {
+                    "name": "label",
+                    "description": "The option label to display in the dropdown.",
+                    "type": "String"
+                }
+            ],
+            "class": "Miogen.Component.Dropdown"
+        },
+        {
+            "file": "js/Component/Dropdown.js",
+            "line": 124,
+            "description": "Renders an individual option to the end of the dropdown.",
+            "itemtype": "method",
+            "name": "renderOption",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "A string representation of the value.",
+                    "type": "String"
+                },
+                {
+                    "name": "label",
+                    "description": "The option label to display in the dropdown.",
+                    "type": "String"
+                }
+            ],
+            "class": "Miogen.Component.Dropdown"
+        },
+        {
+            "file": "js/Component/Dropdown.js",
+            "line": 144,
             "description": "Sets or gets a component attribute.",
             "itemtype": "method",
             "name": "attr",
@@ -618,7 +724,7 @@
                 "description": "The attribute after any modifications.",
                 "type": "Mixed"
             },
-            "class": "Miogen.Component.ComboBox"
+            "class": "Miogen.Component.Dropdown"
         },
         {
             "file": "js/Component/Label.js",
@@ -697,7 +803,7 @@
         {
             "file": "js/Widget/ItemWidget.js",
             "line": 24,
-            "description": "The miogen item that is currently being displayed within the widget",
+            "description": "The miogen item that is currently being displayed within the widget.",
             "itemtype": "property",
             "name": "item",
             "type": "Miogen.Data.MiogenItem",
@@ -712,40 +818,48 @@
             "name": "cfg",
             "type": "{Object}",
             "default": "null",
+            "access": "private",
+            "tagname": "",
             "class": "Miogen"
         },
         {
             "file": "js/Miogen.js",
-            "line": 19,
+            "line": 20,
             "description": "Keeps track of waiting requests for the various modules.",
             "itemtype": "property",
             "name": "defineCallbacks",
             "type": "{Function[]}",
             "default": "[]",
+            "access": "private",
+            "tagname": "",
             "class": "Miogen"
         },
         {
             "file": "js/Miogen.js",
-            "line": 27,
+            "line": 29,
             "description": "The active view model for the application.",
             "itemtype": "property",
             "name": "viewModel",
             "type": "{Miogen.ViewModel.BaseViewModel}",
             "default": "null",
+            "access": "private",
+            "tagname": "",
             "class": "Miogen"
         },
         {
             "file": "js/Miogen.js",
-            "line": 36,
+            "line": 39,
             "description": "Construct a new Miogen instance.",
             "itemtype": "method",
             "name": "construct",
+            "access": "protected",
+            "tagname": "",
             "is_constructor": 1,
             "class": "Miogen"
         },
         {
             "file": "js/Miogen.js",
-            "line": 46,
+            "line": 50,
             "description": "Called on the initialisation of the Miogen class and is responsible for loading\nthe view definition fle from the server and initialising the page view model.",
             "itemtype": "method",
             "name": "init",
@@ -764,7 +878,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 95,
+            "line": 99,
             "description": "Standardised method to record application errors with the option to notify the user.",
             "itemtype": "method",
             "name": "logError",
@@ -788,7 +902,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 125,
+            "line": 129,
             "description": "Runs the Miogen application by calling the view model to initialise all it's data.",
             "itemtype": "method",
             "name": "run",
@@ -799,35 +913,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 139,
-            "description": "Gets or sets a configuration object.",
-            "itemtype": "method",
-            "name": "config",
-            "params": [
-                {
-                    "name": "key",
-                    "description": "The configuration key name to get or set",
-                    "type": "String"
-                },
-                {
-                    "name": "value",
-                    "description": "If set, the value will be set against the key.  If omited the key's currentl\n                     value will be returned.",
-                    "type": "Mixed",
-                    "optional": true
-                }
-            ],
-            "return": {
-                "description": "The key's value after any modifications.",
-                "type": "Mixed"
-            },
-            "example": [
-                "\n    var apiUrl = Miogen.config('apiUrl');\n    \n    Miogen.config('lastLoginTime', new Date());"
-            ],
-            "class": "Miogen"
-        },
-        {
-            "file": "js/Miogen.js",
-            "line": 163,
+            "line": 143,
             "description": "Call the collection of components to render to the supplied dom element.",
             "itemtype": "method",
             "name": "renderTo",
@@ -845,7 +931,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 184,
+            "line": 164,
             "description": "Replaces the application configuration object with a new one.",
             "itemtype": "method",
             "name": "setConfig",
@@ -860,7 +946,32 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 193,
+            "line": 173,
+            "description": "Sets or gets and application configuration attribute.",
+            "itemtype": "method",
+            "name": "attr",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The attribute to set or get.",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": "If supplied, the attribute will be set to this value.",
+                    "type": "Mixed",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "The attribute after any modifications.",
+                "type": "Mixed"
+            },
+            "class": "Miogen"
+        },
+        {
+            "file": "js/Miogen.js",
+            "line": 191,
             "description": "Load a remote JavaScript file and be notified when it has successfully been loaded.",
             "itemtype": "method",
             "name": "loadScript",
@@ -881,7 +992,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 223,
+            "line": 221,
             "description": "Define a new class within the Miogen application.",
             "itemtype": "method",
             "name": "define",
@@ -901,7 +1012,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 256,
+            "line": 254,
             "description": "Loads the supplied classes if not loaded and calls the callback when they are available for use.",
             "itemtype": "method",
             "name": "require",
@@ -922,7 +1033,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 283,
+            "line": 281,
             "description": "Ensures that a specific modules has been loaded and calls the callback when it's ready for use.",
             "itemtype": "method",
             "name": "requireModule",
@@ -942,7 +1053,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 327,
+            "line": 325,
             "description": "Shallow merge of a JavaScript object by overlaying one onto the other.",
             "itemtype": "method",
             "name": "mixIn",
@@ -963,7 +1074,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 343,
+            "line": 341,
             "description": "Bind to an object's function and have a callback called when it has completed executing.",
             "itemtype": "method",
             "name": "bind",
@@ -993,7 +1104,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 386,
+            "line": 384,
             "description": "Unbind to an object's method.",
             "itemtype": "method",
             "name": "unbind",
@@ -1018,7 +1129,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 408,
+            "line": 406,
             "description": "Gets the currently active view model.",
             "itemtype": "method",
             "name": "getViewModel",
@@ -1030,7 +1141,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 417,
+            "line": 415,
             "description": "Set the value of a JavaScript object identified by the query.",
             "itemtype": "method",
             "name": "setObjectValue",
@@ -1055,7 +1166,7 @@
         },
         {
             "file": "js/Miogen.js",
-            "line": 476,
+            "line": 474,
             "description": "Gets an object value denoted by a given query.",
             "itemtype": "method",
             "name": "queryObject",

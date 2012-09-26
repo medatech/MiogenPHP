@@ -49,7 +49,7 @@
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Checkbox.html">Miogen.Component.Checkbox</a></li>
             
-                <li><a href="..&#x2F;classes/Miogen.Component.ComboBox.html">Miogen.Component.ComboBox</a></li>
+                <li><a href="..&#x2F;classes/Miogen.Component.Dropdown.html">Miogen.Component.Dropdown</a></li>
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Label.html">Miogen.Component.Label</a></li>
             
@@ -115,14 +115,16 @@ Miogen = Class.extend({
      * @property cfg
      * @type {Object}
      * @default null
+     * @private
     **&#x2F;
-    cfg: null,
+    config: null,
     
     &#x2F;**
      * Keeps track of waiting requests for the various modules.
      * @property defineCallbacks
      * @type {Function[]}
      * @default []
+     * @private
      *&#x2F;
     defineCallbacks: null,
     
@@ -131,6 +133,7 @@ Miogen = Class.extend({
      * @property viewModel
      * @type {Miogen.ViewModel.BaseViewModel}
      * @default null
+     * @private
      *&#x2F;
     viewModel: null,
     
@@ -139,6 +142,7 @@ Miogen = Class.extend({
      * Construct a new Miogen instance.
      * 
      * @method construct
+     * @protected
      * @constructor
      *&#x2F;
     construct: function () {
@@ -175,7 +179,7 @@ Miogen = Class.extend({
                 
                 &#x2F;&#x2F; Load the page view
                 $.ajax({
-                    url: t.cfg.viewFile,
+                    url: t.config.viewFile,
                     contentType: &#x27;text&#x2F;json&#x27;,
                     success: function (data) {
                         if (typeof (data) === &#x27;string&#x27;) {
@@ -239,30 +243,6 @@ Miogen = Class.extend({
     },
     
     &#x2F;**
-     * Gets or sets a configuration object.
-     * 
-     * @method config
-     * @param {String} key The configuration key name to get or set
-     * @param {mixed} [value] If set, the value will be set against the key.  If omited the key&#x27;s currentl
-     *                      value will be returned.
-     * @return {mixed} The key&#x27;s value after any modifications.
-     * 
-     * @example
-     *     var apiUrl = Miogen.config(&#x27;apiUrl&#x27;);
-     *     
-     *     Miogen.config(&#x27;lastLoginTime&#x27;, new Date());
-     *&#x2F;
-    config: function (key, &#x2F;* optional *&#x2F; value) {
-        if (typeof (value) === &#x27;undefined&#x27;) {
-            return this.cfg[key];
-        }
-        else {
-            this.cfg[key] = value;
-            return value;
-        }
-    },
-    
-    &#x2F;**
      * Call the collection of components to render to the supplied dom element.
      * 
      * @method renderTo
@@ -289,7 +269,25 @@ Miogen = Class.extend({
      * @param {Object} cfg The configuration object to replace it with.
      *&#x2F;
     setConfig: function (cfg) {
-        this.cfg = cfg;
+        this.config = cfg;
+    },
+    
+    &#x2F;**
+     * Sets or gets and application configuration attribute.
+     * 
+     * @method attr
+     * @param {String} key The attribute to set or get.
+     * @param {mixed} [value] If supplied, the attribute will be set to this value.
+     * @return {mixed} The attribute after any modifications.
+     *&#x2F;
+    attr: function (key, value) {
+        if (typeof (value) !== &#x27;undefined&#x27;) {
+            this.config[key] = value;
+            return value;
+        }
+        else {
+            return this.config[key] || null;
+        }
     },
     
     &#x2F;**
@@ -414,7 +412,7 @@ Miogen = Class.extend({
                 else {
                     this.defineCallbacks[name] = [cb];
                     &#x2F;&#x2F; This is the first request for this class, so load the script
-                    this.loadScript(this.cfg.miogenUrl + &#x27;&#x2F;lib&#x2F;miogen&#x2F;js&#x2F;&#x27; + name.replace(&#x27;.&#x27;, &#x27;&#x2F;&#x27;) + &#x27;.js&#x27;);
+                    this.loadScript(this.config.miogenUrl + &#x27;&#x2F;lib&#x2F;miogen&#x2F;js&#x2F;&#x27; + name.replace(&#x27;.&#x27;, &#x27;&#x2F;&#x27;) + &#x27;.js&#x27;);
                 }
                 
                 break;

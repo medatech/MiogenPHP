@@ -49,7 +49,7 @@
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Checkbox.html">Miogen.Component.Checkbox</a></li>
             
-                <li><a href="..&#x2F;classes/Miogen.Component.ComboBox.html">Miogen.Component.ComboBox</a></li>
+                <li><a href="..&#x2F;classes/Miogen.Component.Dropdown.html">Miogen.Component.Dropdown</a></li>
             
                 <li><a href="..&#x2F;classes/Miogen.Component.Label.html">Miogen.Component.Label</a></li>
             
@@ -125,14 +125,14 @@ Miogen.require([&#x27;ViewModel.BaseViewModel&#x27;,
             
             this.components = [];
             this.widgets = {};
-            this.store = new Miogen.Data.MiogenStore(Miogen.config(&#x27;apiUrl&#x27;));
+            this.store = new Miogen.Data.MiogenStore(Miogen.attr(&#x27;apiUrl&#x27;));
             this.deferredResizeCallbacks = [];
         },
         
         renderTo: function (el) {
             var i, t = this;
             
-            document.title = this.cfg.title;
+            document.title = this.config.title;
             
             for (i = 0; i &lt; this.components.length; i += 1) {
                 this.components[i].renderTo(this.el);
@@ -156,7 +156,7 @@ Miogen.require([&#x27;ViewModel.BaseViewModel&#x27;,
         },
         
         build: function (cb) {
-            var i, layout = this.cfg.layout, t = this, loadedComps = 0;
+            var i, layout = this.config.layout, t = this, loadedComps = 0;
             
             this.el = $(&#x27;&lt;div class=&quot;miogen-page&quot;&gt;&lt;&#x2F;div&gt;&#x27;);
             
