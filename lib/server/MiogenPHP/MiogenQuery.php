@@ -22,6 +22,14 @@ class MiogenQuery {
         return isset($this->name) ? $this->name : null;
     }
     
+    public function setRel ($rel) {
+        $this->rel = $rel;
+    }
+    
+    public function getRel () {
+        return isset($this->rel) ? $this->rel : null;
+    }
+    
     public function setMethod ($method) {
         $this->method = $method;
     }
