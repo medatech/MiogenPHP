@@ -106,10 +106,11 @@ class ResponseContext {
         $data = &$this->document;
                 
         if (is_null($this->viewName)) {
-            if ($this->contentType == 'text/html') { // Temp render to HTML
-                require(dirname(__FILE__) . '/views/html.php');
-            }
-            elseif ($this->contentType == 'vnd.miogen+json') {
+//            // Removed because the HTML renderer is not yet complete
+//            if ($this->contentType == 'text/html') { // Temp render to HTML
+//                require(dirname(__FILE__) . '/views/html.php');
+//            }
+            if ($this->contentType == 'vnd.miogen+json') {
                 // Render the body if there is one
                 if (isset($this->document)) {
                     print(json_encode($this->document->getDocument()));
