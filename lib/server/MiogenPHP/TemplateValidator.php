@@ -17,18 +17,24 @@ class TemplateValidator {
     public function validate ($userData) {
         $this->errors = array();
         
-        $this->validateContains($userData, array(
-            'data' => 'object'
-        ));
-        
-        $validateData = is_null($userData) ? array() : $userData;
-        if (isset($userData['data'])) {
-            $validateData = $userData['data'];
+        if (is_null($userData)) {
+            $this->errors[] = array(
+                'prompt' => 'Malformed message body'
+            );
         }
         else {
-            $validateData = array();
+            $this->validateContains($userData, array(
+                'data' => 'array'
+            ));
+            
+            if (isset($userData['data'])) {
+                $validateData = $userData['data'];
+            }
+            else {
+                $validateData = array();
+            }
+            $this->validateData($validateData, $this->template->getFields());
         }
-        $this->validateData($validateData, $this->template->getFields());
         
         return count($this->errors) == 0;
     }
@@ -53,7 +59,7 @@ class TemplateValidator {
         
         // Then go through each template field and make sure the required fields exist
         foreach ($templateData as $field => $templateField) {
-            $required = isset($templateField['required']) ? $templateField['required'] : false;
+            $required = $templateField->isRequired();
             
             if ($required && !isset($userData[$field])) {
                 $this->errors[] = array(
@@ -63,7 +69,7 @@ class TemplateValidator {
                 );
             }
             else {
-                $readOnly = isset($templateField['readOnly']) ? $templateField['readOnly'] : false;
+                $readOnly = $templateField->isReadOnly();
                 if ($readOnly && isset($userData[$field])) {
                     $this->errors[] = array(
                         'prompt' => 'Not allowed to specify field "' . $field . '" as it is read only',
@@ -94,7 +100,7 @@ class TemplateValidator {
         
         // Now mix in the template values
         foreach ($templateData as $attr => $value) {
-            $properties[attr] = $value;
+            $properties[$attr] = $value;
         }
         
         return $properties;
@@ -377,7 +383,7 @@ class TemplateValidator {
     
     private function validateContains ($obj, $children) {
         // First make sure all the object children exist in the valid children
-        foreach ($obj as $objKey) {
+        foreach ($obj as $objKey => $objValue) {
             // Make sure it is expected
             if (isset($children[$objKey])) {
                 $objValue = $obj[$objKey];
@@ -399,7 +405,7 @@ class TemplateValidator {
         
         // Now see if there are any missing children
         if (!is_null($obj)) {
-            foreach ($children as $objKey) {
+            foreach ($children as $objKey => $objValue) {
                 if (!isset($obj[$objKey])) {
                     $this->errors[] = array(
                         'prompt' => 'Missing element "' . $objKey . '"'

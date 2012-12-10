@@ -3,6 +3,8 @@
 require_once('MiogenItem.php');
 require_once('MiogenTemplate.php');
 require_once('MiogenQuery.php');
+require_once('TemplateValidator.php');
+require_once('DataMixin.php');
 
 class MiogenDocument {
     var $collection = array('collection' => array());
@@ -11,7 +13,7 @@ class MiogenDocument {
     var $collectionTemplate = null;
     var $itemName = null;
     
-    public function __construct ($uri, $isCollection = true) {
+    public function __construct ($uri = null, $isCollection = true) {
         $this->col = &$this->collection['collection'];
         $this->col['href'] = $uri;
         $this->col['version'] = '1.0';
@@ -99,9 +101,9 @@ class MiogenDocument {
         }
     }
     
-    public function &getItem ($index) {
-        if (isset($this->col['items']) && count($this->col['items']) > 0) {
-            return $this->col['items'][0];
+    public function &getItem ($index = 0) {
+        if (isset($this->col['items']) && count($this->col['items']) > $index) {
+            return $this->col['items'][$index];
         }
         else {
             $null = null;
@@ -160,6 +162,60 @@ class MiogenDocument {
     
     public function setStartIndex ($index) {
         $this->col['startIndex'] = $index;
+    }
+    
+    public function addErrors ($errors) {
+        foreach ($errors as $error) {
+            $this->addError($error);
+        }
+    }
+    
+    public function addError ($error) {
+        if (!isset($this->col['errors'])) {
+            $this->col['errors'] = array();
+        }
+        $this->col['errors'][] = $error;
+    }
+    
+    public function hasErrors () {
+        if (isset($this->col['errors'])) {
+            return count($this->col['errors']) > 0;
+        }
+        else {
+            return false;
+        }
+    }
+    
+    /**
+     * Validate and apply the data to the collection item
+     * @param type $userData
+     * @param type $template
+     * @param type $setDefaults
+     */
+    public function &apply ($userData, $template, $setDefaults) {
+        
+        $returnData = null;
+        $validator = new TemplateValidator($template);
+        if (!$validator->validate($userData)) {
+            $this->addErrors($validator->getErrors());
+        }
+        else {
+            $item = new MiogenItem(null);
+            
+            // Mix in the user data
+            $mixedData = array();
+            $mixUserData = isset($userData['data']) ? $userData['data'] : array();
+            $templateData = $template->getFields();
+            DataMixin::mixin($mixedData, $mixUserData, $templateData, $setDefaults);
+            
+            // Set the mixed data to the item
+            $item->setData($mixedData);
+            
+            $this->addItem($item);
+            $returnData = &$item;
+        }
+        
+        return $returnData;
     }
 }
 ?>

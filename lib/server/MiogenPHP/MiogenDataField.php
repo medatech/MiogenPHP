@@ -96,6 +96,14 @@ class MiogenDataField {
     }
     
     /**
+     * Gets whether the field is read only or not
+     * @return boolean True if read only, false if not
+     */
+    public function isReadOnly () {
+        return isset($this->readOnly) ? $this->readOnly : false;
+    }
+    
+    /**
      * For numeric data types get the step increments
      * @return int
      */

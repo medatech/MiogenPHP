@@ -28,6 +28,10 @@ class MiogenItem {
         $this->data[$name] = new MiogenDataField($cfg);
     }
     
+    public function setData ($data) {
+        $this->data = $data;
+    }
+    
     public function getField ($name) {
         if (isset($this->data[$name])) {
             return $this->data[$name];
