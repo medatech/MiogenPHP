@@ -7,7 +7,7 @@ class MiogenItem {
     var $href = null;
     var $data = array();
     
-    public function __construct ($href, $dataFields = null) {
+    public function __construct ($href = null, $dataFields = null) {
         $this->href = $href;
         if (!is_null($dataFields)) {
             $this->addFields($dataFields);
@@ -32,12 +32,16 @@ class MiogenItem {
         $this->data = $data;
     }
     
+    public function &getData () {
+        return $this->data;
+    }
+    
     public function getField ($name) {
         if (isset($this->data[$name])) {
             return $this->data[$name];
         }
         else {
-            return null;
+            return new MiogenDataField(array());
         }
     }
     

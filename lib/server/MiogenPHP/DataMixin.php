@@ -13,16 +13,15 @@ class DataMixin {
             if ($fieldValue->getType() == 'group') {
                 // It's a gropu, so make sure it exists on the target side
                 if (!isset($targetData[$field])) {
-                    $targetData[$field] = array(
-                        'data' => array()
-                    );
+                    $targetData[$field] = new MiogenItem();
                 }
                 
                 $userGroupData = isset($userData[$field]) && isset($userData[$field]['data']) ? $userData[$field]['data'] : array();
                 
                 // Now recursively process the group
                 $fieldData = $fieldValue->getData();
-                DataMixin::mixin($targetData[$field]['data'], $userGroupData, $fieldData, $setDefaults);
+                $targetItemData = &$targetData[$field]->getData();
+                DataMixin::mixin($targetItemData, $userGroupData, $fieldData, $setDefaults);
             }
             elseif ($fieldValue->getType() == 'array') {
                 $targetData[$field] = array();
