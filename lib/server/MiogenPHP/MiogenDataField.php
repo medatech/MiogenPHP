@@ -92,7 +92,7 @@ class MiogenDataField {
      * @return boolean True if required, false if not
      */
     public function isRequired () {
-        return isset($this->required) ? $this->required : false;
+        return isset($this->required) ? $this->required : true;
     }
     
     /**
