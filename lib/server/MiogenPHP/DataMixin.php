@@ -21,16 +21,17 @@ class DataMixin {
                 $userGroupData = isset($userData[$field]) && isset($userData[$field]['data']) ? $userData[$field]['data'] : array();
                 
                 // Now recursively process the group
-                $tData = isset($fieldValue['data']) ? $fieldValue['data'] : array();
-                DataMixin::mixin($targetData[$field]['data'], $userGroupData, $tData, $setDefaults);
+                $fieldData = $fieldValue->getData();
+                DataMixin::mixin($targetData[$field]['data'], $userGroupData, $fieldData, $setDefaults);
             }
             elseif ($fieldValue->getType() == 'array') {
                 $targetData[$field] = array();
                 
+                $fieldData = $templateData[$field]->getData();
                 if (isset($userData[$field])) {
                     for ($i = 0; $i < count($userData[$field]); $i += 1) {
                         $arrayData = array('data' => array());
-                        DataMixin::mixin($arrayData['data'], $userData[$field][$i]['data'], $templateData[$field]['data'], $setDefaults);
+                        DataMixin::mixin($arrayData['data'], $userData[$field][$i]['data'], $fieldData, $setDefaults);
                         $targetData[$field][] = $arrayData;
                     }
                 }

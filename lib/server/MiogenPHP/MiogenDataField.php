@@ -153,5 +153,9 @@ class MiogenDataField {
     public function getRel () {
         return isset($this->rel) ? $this->rel : null;
     }
+    
+    public function getData () {
+        return isset($this->data) ? $this->data : array();
+    }
 }
 ?>
