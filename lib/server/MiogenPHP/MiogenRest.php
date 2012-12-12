@@ -62,7 +62,7 @@ class MiogenRest {
             $this->config['viewPath'] .= DIRECTORY_SEPARATOR;
         }
         
-        $this->initURLMappings();
+        $this->initUrlMappings();
     }
     
     /**
@@ -113,7 +113,7 @@ class MiogenRest {
                 for ($i = 0; $i < count($matches[0]); $i += 1) {
                     // Relpace all curley braches with a pattern matcher
                     $urlConfig['params'][] = substr($matches[0][$i], 1, strlen($matches[0][$i]) - 2);
-                    $moduleUrl = str_replace($matches[0][$i], '([a-zA-Z0-9-_]+)', $moduleUrl);
+                    $moduleUrl = str_replace($matches[0][$i], '([a-zA-Z0-9-_.]+)', $moduleUrl);
                 }
             }
             $urlConfig['regex'] = '~^' . $moduleUrl . '$~';
