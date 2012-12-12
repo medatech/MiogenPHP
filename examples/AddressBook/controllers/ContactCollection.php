@@ -64,7 +64,7 @@ class ContactCollection extends MiogenRestModule {
         // Add the collection template
         $doc->addTemplate($this->getTemplate(), true);
 
-        $response->setResponseData($doc);
+        $response->setDocument($doc);
         $response->setStatusCode(200);
     }
     

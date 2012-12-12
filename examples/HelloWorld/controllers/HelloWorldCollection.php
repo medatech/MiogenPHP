@@ -82,7 +82,7 @@ class HelloWorldCollection extends MiogenRestModule {
             )
         ));
 
-        $response->setResponseData($doc);
+        $response->setDocument($doc);
         $response->setStatusCode(200);
     }
     
