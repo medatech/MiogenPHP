@@ -130,7 +130,7 @@ class ResponseContext {
             header('HTTP/1.1 ' . $this->statusCode . ' ' . $this->getStatusMessage());
             header('Content-Type: ' . $this->getContentType());
             foreach ($this->headers as $key => $value) {
-                header($key, $value);
+                header($key . ': ' . $value);
             }
         }
     }
