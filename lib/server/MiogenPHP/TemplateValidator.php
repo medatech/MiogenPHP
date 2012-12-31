@@ -24,7 +24,8 @@ class TemplateValidator {
         }
         else {
             $this->validateContains($userData, array(
-                'data' => 'array'
+                'data' => array('type' => 'array', 'required' => true),
+                'template' => array('type' => 'string', 'required' => false)
             ));
             
             if (isset($userData['data'])) {
@@ -159,7 +160,7 @@ class TemplateValidator {
                 break;
             }
             case 'email': {
-                $this->validateContains($fieldData, array('value' => 'string'));
+                $this->validateContains($fieldData, array('value' => array('type' => 'string', 'required' => true)));
                 if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" is not a valid email address',
@@ -389,7 +390,7 @@ class TemplateValidator {
                 $objValue = $obj[$objKey];
                 
                 // Make sure it's the correct type
-                if (gettype($objValue) !== $children[$objKey] || is_null($objValue)) {
+                if (gettype($objValue) !== $children[$objKey]['type'] || is_null($objValue)) {
                     $this->errors[] = array(
                         'prompt' => 'Invalid object for element "' . $objKey . '", expected "' . $children[$objKey] . '" but was "' .
                             gettype($objValue) . '"'
@@ -406,10 +407,12 @@ class TemplateValidator {
         // Now see if there are any missing children
         if (!is_null($obj)) {
             foreach ($children as $objKey => $objValue) {
-                if (!isset($obj[$objKey])) {
-                    $this->errors[] = array(
-                        'prompt' => 'Missing element "' . $objKey . '"'
-                    );
+                if ($objValue['required']) {
+                    if (!isset($obj[$objKey])) {
+                        $this->errors[] = array(
+                            'prompt' => 'Missing element "' . $objKey . '"'
+                        );
+                    }
                 }
             }
         }

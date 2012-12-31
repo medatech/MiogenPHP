@@ -30,6 +30,14 @@ class MiogenQuery {
         return isset($this->rel) ? $this->rel : null;
     }
     
+    public function setTemplateName ($templateName) {
+        $this->template = $templateName;
+    }
+    
+    public function getTemplateName () {
+        return isset($this->template) ? $this->template : null;
+    }
+    
     public function setMethod ($method) {
         $this->method = $method;
     }
