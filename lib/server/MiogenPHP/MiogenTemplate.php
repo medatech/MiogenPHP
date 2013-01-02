@@ -21,6 +21,19 @@ class MiogenTemplate {
         $this->allowPost = $value;
     }
     
+    public function setRel ($rel) {
+        $this->rel = $rel;
+    }
+    
+    public function getRel () {
+        if (isset($this->rel)) {
+            return $this->rel;
+        }
+        else {
+            return null;
+        }
+    }
+    
     public function allowPost () {
         if (isset($this->allowPost)) {
             return $this->allowPost;
