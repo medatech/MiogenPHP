@@ -40,7 +40,7 @@ class TemplateValidator {
         return count($this->errors) == 0;
     }
     
-    private function validateData ($userData, $templateData) {
+    private function validateData ($userData, $templateData, $parentField = '') {
         
         // Go through every field in the data and validate each field
         foreach ($userData as $field => $fieldData) {
@@ -49,12 +49,12 @@ class TemplateValidator {
                 $this->errors[] = array(
                     'prompt' => 'Unexpected data field "' . $field . '"',
                     'inlinePrompt' => 'Invalid',
-                    'field' => $field
+                    'field' => "$parentField$field"
                 );
             }
             else {
                 // Validate the field
-                $this->validateField($field, $fieldData, $templateData[$field]);
+                $this->validateField($field, $fieldData, $templateData[$field], $parentField);
             }
         }
         
@@ -66,7 +66,7 @@ class TemplateValidator {
                 $this->errors[] = array(
                     'prompt' => 'Missing required field "' . $field . '"',
                     'inlinePrompt' => 'Required',
-                    'field' => $field
+                    'field' => "$parentField$field"
                 );
             }
             else {
@@ -75,7 +75,7 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Not allowed to specify field "' . $field . '" as it is read only',
                         'inlinePrompt' => 'Read only',
-                        'field' => $field
+                        'field' => "$parentField$field"
                     );
                 }
             }
@@ -84,7 +84,7 @@ class TemplateValidator {
     
     private function getFieldProperties ($templateData) {
         $properties = array(
-            'required' => false,
+            'required' => true,
             'readOnly' => false,
             'minLen' => 0,
             'maxLen' => null, // No max len
@@ -139,7 +139,7 @@ class TemplateValidator {
         return preg_match("#([0-1]{1}[0-9]{1}|[2]{1}[0-3]{1}):[0-5]{1}[0-9]{1}#", $time);
     }
     
-    private function validateField ($fieldName, $fieldData, $templateData) {
+    private function validateField ($fieldName, $fieldData, $templateData, $parentField) {
         
         $validateValue = true;
         
@@ -154,18 +154,18 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must be a string',
                         'inlinePrompt' => 'Not a string',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 break;
             }
             case 'email': {
-                $this->validateContains($fieldData, array('value' => array('type' => 'string', 'required' => true)));
+                $this->validateContains($fieldData, array('value' => array('type' => 'string', 'required' => true)), "$parentField$fieldName.");
                 if (filter_var($value, FILTER_VALIDATE_EMAIL) === false) {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" is not a valid email address',
                         'inlinePrompt' => 'Invalid',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 break;
@@ -175,7 +175,7 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must be boolean',
                         'inlinePrompt' => 'Invalid',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 break;
@@ -185,7 +185,7 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must be a number',
                         'inlinePrompt' => 'Invalid',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 else {
@@ -195,7 +195,8 @@ class TemplateValidator {
                         $this->errors[] = array(
                             'prompt' => 'Field "' . $fieldName . '" must have a maximum of ' . $props['decimals'] . ' decimal place' . ($props['decimals'] == 1 ? '' : 's'),
                             'inlinePrompt' => 'Too many decimals',
-                            'field' => $fieldName);
+                            'field' => "$parentField$fieldName.value"
+                        );
                     }
                 }
                 break;
@@ -205,7 +206,7 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must be a string',
                         'inlinePrompt' => 'Not a string',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 else {
@@ -214,7 +215,7 @@ class TemplateValidator {
                         $this->errors[] = array(
                             'prompt' => 'Field "' . $fieldName . '" must be a valid URL',
                             'inlinePrompt' => 'Invalid',
-                            'field' => $fieldName
+                            'field' => "$parentField$fieldName.value"
                         );
                     }
                 }
@@ -226,7 +227,7 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must be a timestamp',
                         'inlinePrompt' => 'Not a timestamp',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 break;
@@ -236,7 +237,7 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must be a valid time',
                         'inlinePrompt' => 'Invalid',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 break;
@@ -247,7 +248,7 @@ class TemplateValidator {
                         $this->errors[] = array(
                             'prompt' => 'Field "' . $fieldName . '" contains an invalid choice',
                             'inlinePrompt' => 'Invalid choice',
-                            'field' => $fieldName
+                            'field' => "$parentField$fieldName.value"
                         );
                     }
                 }
@@ -259,11 +260,11 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must contain a data child',
                         'inlinePrompt' => 'Missing data child',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName.value"
                     );
                 }
                 else {
-                    $this->validateData($fieldData['data'], is_null($props['data']) ? array() : $props['data']);
+                    $this->validateData($fieldData['data'], is_null($props['data']) ? array() : $props['data'], "$parentField$fieldName.");
                 }
                 $validateValue = false;
                 break;
@@ -273,7 +274,7 @@ class TemplateValidator {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . fieldName . '" must be an array',
                         'inlinePrompt' => 'Not an array',
-                        'field' => $fieldName
+                        'field' => "$parentField$fieldName"
                     );
                 }
                 else {
@@ -284,7 +285,7 @@ class TemplateValidator {
                             $this->errors[] = array(
                                 'prompt' => 'Field "' . $fieldName . '" is required',
                                 'inlinePrompt' => 'Required',
-                                'field' => $fieldName
+                                'field' => "$parentField$fieldName"
                             );
                         }
                         elseif ($props['min'] > count($fieldData)) {
@@ -292,7 +293,7 @@ class TemplateValidator {
                             $this->errors[] = array(
                                 'prompt' => 'Field "' . $fieldName . '" must have at least ' . $props['min'] . ' item' . ($props['min'] == 1 ? '' : 's'),
                                 'inlinePrompt' => 'Not enough items',
-                                'field' => $fieldName
+                                'field' => "$parentField$fieldName"
                             );
                         }
                     }
@@ -303,7 +304,7 @@ class TemplateValidator {
                             $this->errors[] = array(
                                 'prompt' => 'Field "' . $fieldName . '" must have at most ' . $props['max'] . ' item' . ($props['max'] == 1 ? '' : 's'),
                                 'inlinePrompt' => 'Too many items',
-                                'field' => $fieldName
+                                'field' => "$parentField$fieldName"
                             );
                         }
                     }
@@ -317,11 +318,11 @@ class TemplateValidator {
                                 $this->errors[] = array(
                                     'prompt' => 'Field "' . $fieldName . '[' . $i . '] must contain a data child',
                                     'inlinePrompt' => 'Missing data child',
-                                    'field' => $fieldName . '[' . $i . ']'
+                                    'field' => "$parentField$fieldName" . '[' . $i . ']'
                                 );
                             }
                             else {
-                                $this->validateData($item['data'], isset($templateData['data']) ? $templateData['data'] : array());
+                                $this->validateData($item['data'], isset($templateData['data']) ? $templateData['data'] : array(), "$parentField{$fieldName}[$i].");
                             }
                         }
                     }
@@ -332,7 +333,9 @@ class TemplateValidator {
             }
             default: {
                 $this->errors[] = array(
-                    'prompt' => 'Unknown template type "' . $props['type'] . '"'
+                    'prompt' => 'Unknown template type "' . $props['type'] . '"',
+                    'field' => "$parentField$fieldName",
+                    'inlinePrompt' => 'Invalid template type'
                 );
             }
         }
@@ -343,7 +346,7 @@ class TemplateValidator {
                 $this->errors[] = array(
                     'prompt' => 'Field "' . $fieldName . '" is required',
                     'inlinePrompt' => 'Required',
-                    'field' => $fieldName
+                    'field' => "$parentField$fieldName.value"
                 );
             }
             
@@ -352,7 +355,7 @@ class TemplateValidator {
                 $this->errors[] = array(
                     'prompt' => 'Field "' . $fieldName . '" must be at least ' . $props['minLen'] . ' character' . ($props['minLen'] == 1 ? '' : 's'),
                     'inlinePrompt' => 'Too short',
-                    'field' => $fieldName
+                    'field' => "$parentField$fieldName.value"
                 );
             }
             
@@ -360,7 +363,7 @@ class TemplateValidator {
                 $this->errors[] = array(
                     'prompt' => 'Field "' . $fieldName . '" must be no more than ' . $props['maxLen'] . ' character' . ($props['maxLen'] == 1 ? '' : 's'),
                     'inlinePrompt' => 'Too long',
-                    'field' => $fieldName
+                    'field' => "$parentField$fieldName.value"
                 );
             }
             
@@ -368,7 +371,7 @@ class TemplateValidator {
                 $this->errors[] = array(
                     'prompt' => 'Field "' . $fieldName . '" must be no less than ' . $props['min'],
                     'inlinePrompt' => 'Below minimum',
-                    'field' => $fieldName
+                    'field' => "$parentField$fieldName.value"
                 );
             }
             
@@ -376,13 +379,13 @@ class TemplateValidator {
                 $this->errors[] = array(
                     'prompt' => 'Field "' . $fieldName . '" must be no more than ' . $props['max'],
                     'inlinePrompt' => 'Above maximum',
-                    'field' => $fieldName
+                    'field' => "$parentField$fieldName.value"
                 );
             }
         }
     }
     
-    private function validateContains ($obj, $children) {
+    private function validateContains ($obj, $children, $parentField = '') {
         // First make sure all the object children exist in the valid children
         foreach ($obj as $objKey => $objValue) {
             // Make sure it is expected
@@ -390,16 +393,20 @@ class TemplateValidator {
                 $objValue = $obj[$objKey];
                 
                 // Make sure it's the correct type
-                if (gettype($objValue) !== $children[$objKey]['type'] || is_null($objValue)) {
+                if (gettype($objValue) !== $children[$objKey]['type'] && !is_null($objValue)) {
                     $this->errors[] = array(
-                        'prompt' => 'Invalid object for element "' . $objKey . '", expected "' . $children[$objKey] . '" but was "' .
+                        'field' => "$parentField$objKey",
+                        'inlinePrompt' => 'Invalid type',
+                        'prompt' => 'Invalid object for element "' . $objKey . '", expected "' . $children[$objKey]['type'] . '" but was "' .
                             gettype($objValue) . '"'
                     );
                 }
             }
             else {
                 $this->errors[] = array(
-                    'prompt' => 'Unexpected element "' . $objKey . '"'
+                    'prompt' => 'Unexpected element "' . $objKey . '"',
+                    'field' => "$parentField$objKey",
+                    'inlinePrompt' => "Unexpected"
                 );
             }
         }
@@ -410,7 +417,9 @@ class TemplateValidator {
                 if ($objValue['required']) {
                     if (!isset($obj[$objKey])) {
                         $this->errors[] = array(
-                            'prompt' => 'Missing element "' . $objKey . '"'
+                            'prompt' => 'Missing element "' . $objKey . '"',
+                            'field' => "$parentField$objKey",
+                            'inlinePrompt' => "Missing"
                         );
                     }
                 }
