@@ -25,7 +25,8 @@ class TemplateValidator {
         else {
             $this->validateContains($userData, array(
                 'data' => array('type' => 'array', 'required' => true),
-                'template' => array('type' => 'string', 'required' => false)
+                'template' => array('type' => 'string', 'required' => false),
+                'name' => array('type' => 'string', 'required' => false)
             ));
             
             if (isset($userData['data'])) {
