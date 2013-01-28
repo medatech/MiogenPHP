@@ -146,6 +146,16 @@ class TemplateValidator {
         $props = $this->getFieldProperties($templateData);
         $value = is_null($fieldData) ? null : (isset($fieldData['value']) ? $fieldData['value'] : null);
         $type = gettype($value);
+
+        // Validate required field first
+        if ($props['type'] != 'group' && is_null($value) && $props['required']) {
+            $this->errors[] = array(
+                'prompt' => 'Field "' . $fieldName . '" is required',
+                'inlinePrompt' => 'Required',
+                'field' => "$parentField$fieldName.value"
+            );
+            return;
+        }
         
         switch ($props['type']) {
             case 'text':
@@ -341,15 +351,6 @@ class TemplateValidator {
         }
         
         if ($validateValue) {
-            // Validate required field
-            if (is_null($value) && $props['required']) {
-                $this->errors[] = array(
-                    'prompt' => 'Field "' . $fieldName . '" is required',
-                    'inlinePrompt' => 'Required',
-                    'field' => "$parentField$fieldName.value"
-                );
-            }
-            
             // Validate the length
             if (!is_null($props['minLen']) && !is_null($value) && strlen(''.$value) < $props['minLen']) {
                 $this->errors[] = array(
