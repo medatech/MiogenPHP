@@ -25,7 +25,8 @@ class TemplateValidator {
         else {
             $this->validateContains($userData, array(
                 'data' => array('type' => 'array', 'required' => true),
-                'template' => array('type' => 'string', 'required' => false)
+                'template' => array('type' => 'string', 'required' => false),
+                'name' => array('type' => 'string', 'required' => false)
             ));
             
             if (isset($userData['data'])) {
@@ -146,7 +147,6 @@ class TemplateValidator {
         $props = $this->getFieldProperties($templateData);
         $value = is_null($fieldData) ? null : (isset($fieldData['value']) ? $fieldData['value'] : null);
         $type = gettype($value);
-
 
         // Validate required field
         if (is_null($value) && $props['required'] && $props['type'] != 'group' && $props['type'] != 'array') {
@@ -417,11 +417,11 @@ class TemplateValidator {
         if (!is_null($obj)) {
             foreach ($children as $objKey => $objValue) {
                 if ($objValue['required']) {
-                    if (!isset($obj[$objKey]) && !is_null($obj[$objKey])) {
+                    if (!isset($obj[$objKey])) {
                         $this->errors[] = array(
                             'prompt' => 'Missing element "' . $objKey . '"',
                             'field' => "$parentField$objKey",
-                            'inlinePrompt' => "$objKey - Missing"
+                            'inlinePrompt' => "Missing"
                         );
                     }
                 }
