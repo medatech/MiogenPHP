@@ -146,7 +146,18 @@ class TemplateValidator {
         $props = $this->getFieldProperties($templateData);
         $value = is_null($fieldData) ? null : (isset($fieldData['value']) ? $fieldData['value'] : null);
         $type = gettype($value);
-        
+
+
+        // Validate required field
+        if (is_null($value) && $props['required'] && $props['type'] != 'group' && $props['type'] != 'array') {
+            $this->errors[] = array(
+                'prompt' => 'Field "' . $fieldName . '" is required',
+                'inlinePrompt' => 'Required',
+                'field' => "$parentField$fieldName.value"
+            );
+            return;
+        }
+
         switch ($props['type']) {
             case 'text':
             case 'password': {
@@ -341,15 +352,6 @@ class TemplateValidator {
         }
         
         if ($validateValue) {
-            // Validate required field
-            if (is_null($value) && $props['required']) {
-                $this->errors[] = array(
-                    'prompt' => 'Field "' . $fieldName . '" is required',
-                    'inlinePrompt' => 'Required',
-                    'field' => "$parentField$fieldName.value"
-                );
-            }
-            
             // Validate the length
             if (!is_null($props['minLen']) && !is_null($value) && strlen(''.$value) < $props['minLen']) {
                 $this->errors[] = array(
@@ -415,11 +417,11 @@ class TemplateValidator {
         if (!is_null($obj)) {
             foreach ($children as $objKey => $objValue) {
                 if ($objValue['required']) {
-                    if (!isset($obj[$objKey])) {
+                    if (!isset($obj[$objKey]) && !is_null($obj[$objKey])) {
                         $this->errors[] = array(
                             'prompt' => 'Missing element "' . $objKey . '"',
                             'field' => "$parentField$objKey",
-                            'inlinePrompt' => "Missing"
+                            'inlinePrompt' => "$objKey - Missing"
                         );
                     }
                 }
