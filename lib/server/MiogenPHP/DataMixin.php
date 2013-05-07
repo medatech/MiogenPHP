@@ -11,9 +11,13 @@ class DataMixin {
         // Go through all the template items and if they exist in the user data, set them
         foreach ($templateData as $field => $fieldValue) {
             if ($fieldValue->getType() == 'group') {
-                // It's a gropu, so make sure it exists on the target side
+                // It's a group, so make sure it exists on the target side if we are setting defaults
                 if (!isset($targetData[$field])) {
-                    $targetData[$field] = new MiogenItem();
+                    if (!isset($userData[$field]) && !$setDefaults) {
+                        continue;
+                    } else {
+                        $targetData[$field] = new MiogenItem();
+                    }
                 }
                 
                 $userGroupData = isset($userData[$field]) && isset($userData[$field]['data']) ? $userData[$field]['data'] : array();
@@ -22,8 +26,7 @@ class DataMixin {
                 $fieldData = $fieldValue->getData();
                 $targetItemData = &$targetData[$field]->getData();
                 DataMixin::mixin($targetItemData, $userGroupData, $fieldData, $setDefaults);
-            }
-            elseif ($fieldValue->getType() == 'array') {
+            } elseif ($fieldValue->getType() == 'array') {
                 $targetData[$field] = array();
                 
                 $fieldData = $templateData[$field]->getData();
@@ -34,8 +37,7 @@ class DataMixin {
                         $targetData[$field][] = $arrayData;
                     }
                 }
-            }
-            else {
+            } else {
                 // Set the value if present in the user data
                 if (isset($userData[$field]) && isset($userData[$field]['value'])) {
                     $value = $userData[$field]['value'];

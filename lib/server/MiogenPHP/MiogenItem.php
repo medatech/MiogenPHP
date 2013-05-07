@@ -41,7 +41,7 @@ class MiogenItem {
             return $this->data[$name];
         }
         else {
-            return new MiogenDataField(array());
+            return null;
         }
     }
     
