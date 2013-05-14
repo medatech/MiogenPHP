@@ -233,6 +233,7 @@ class TemplateValidator {
                 break;
             }
             case 'timestamp':
+            case 'monthyear':
             case 'date': {
                 if ($type != 'NULL' && $type != 'integer') {
                     $this->errors[] = array(
