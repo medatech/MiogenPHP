@@ -195,7 +195,7 @@ class TemplateValidator {
                 if ($type != 'NULL' && $type != 'integer' && $type != 'double') {
                     $this->errors[] = array(
                         'prompt' => 'Field "' . $fieldName . '" must be a number',
-                        'inlinePrompt' => 'Invalid',
+                        'inlinePrompt' => 'Invalid number',
                         'field' => "$parentField$fieldName.value"
                     );
                 }
@@ -369,7 +369,7 @@ class TemplateValidator {
                 );
             }
             
-            if (!is_null($props['min']) && !is_null($value) && $value < $props['min']) {
+            if (!is_null($props['min']) && !is_null($value) && is_numeric($value) && $value < $props['min']) {
                 $this->errors[] = array(
                     'prompt' => 'Field "' . $fieldName . '" must be no less than ' . $props['min'],
                     'inlinePrompt' => 'Below minimum',
@@ -377,7 +377,7 @@ class TemplateValidator {
                 );
             }
             
-            if (!is_null($props['max']) && !is_null($value) && $value > $props['max']) {
+            if (!is_null($props['max']) && !is_null($value) && is_numeric($value) && $value > $props['max']) {
                 $this->errors[] = array(
                     'prompt' => 'Field "' . $fieldName . '" must be no more than ' . $props['max'],
                     'inlinePrompt' => 'Above maximum',
